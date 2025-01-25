@@ -1,6 +1,7 @@
 import { lazy } from "react";
 const Login = lazy(() => import("../page/login/Index"));
 const Beranda = lazy(() => import("../backbone/BerandaUtama"));
+const BerandaAfterLogin = lazy(() => import("../backbone/BerandaAfterLogin"));
 const KelolaKK = lazy(() => import("../page/master-pic-pknow/KelolaKK/Root"));
 const KelolaAKK = lazy(() => import("../page/master-pic-pknow/KelolaAKK/Root"));
 const Prodi = lazy(() => import("../page/master-prodi/Index"));
@@ -18,8 +19,9 @@ const AksesMateri = lazy(() => import("../page/Materi/master-test/Root"));
 const Daftar = lazy(() => import("../page/daftar/Root"));
 
 const routeList = [
-  { path: "/", element: <Login /> },
+  { path: "/", element: <Beranda /> },
   { path: "/beranda", element: <Beranda /> },
+  { path: "/beranda_eksternal", element: <BerandaAfterLogin /> },
   { path: "/login", element: <Login /> },
   { path: "/beranda_utama", element: <Beranda /> },
   { path: "/beranda_prodi", element: <Prodi /> },

@@ -20,6 +20,7 @@ import 'select2/dist/js/select2.min.js';
 import Daftar from "./component/page/daftar/Index.jsx";  
 import Beranda from "./component/backbone/BerandaUtama.jsx";
 
+
 export default function App() {
   const [listMenu, setListMenu] = useState([]);
   const [listRoute, setListRoute] = useState([]);
@@ -27,6 +28,7 @@ export default function App() {
   const isDaftar = window.location.pathname.includes("daftar");
   const isLogin = window.location.pathname.includes("login");
   const cookie = Cookies.get("activeUser");
+  console.log("Cookie yang diterima:", cookie);
   if (isDaftar) return <Daftar/>;
   if (isLogin) return <Login/>;
   if (isLogoutPage) return <Logout />;
@@ -34,7 +36,8 @@ export default function App() {
   else if (isDaftar) return <Daftar/>;
   else {
     const userInfo = JSON.parse(decryptId(cookie));
-
+    console.log("user info", userInfo)
+    
     useEffect(() => {
       const getMenu = async () => {
         const menu = await CreateMenu(userInfo.role);
@@ -74,7 +77,7 @@ export default function App() {
   
     const userProfile = {
       name: userInfo.nama,
-      role: userInfo.peran,
+      role: userInfo.username,
       lastLogin: currentDateTime,
       photo:profile
     };
@@ -90,13 +93,13 @@ export default function App() {
         listMenu={listMenu}
         isProfileDropdownVisible={true}
         showMenu={true}
+        showButtonLoginDaftar={false}
       />   
             <RouterProvider
                   router={createBrowserRouter(listRoute, {
                     basename: BASE_ROUTE,
                   })}
                 />
-
             <div className="footer">
               <Footer/>
             </div>

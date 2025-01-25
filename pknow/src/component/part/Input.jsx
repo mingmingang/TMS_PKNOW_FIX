@@ -54,12 +54,6 @@ const Input = forwardRef(function Input(
       )}
       {label === "" && (
         <>
-        {errorMessage && (
-            <span className="small ms-1 text-danger">
-              {
-                errorMessage}
-            </span>
-          )}
           {type === "textarea" ? (
             <textarea
               rows="5"
@@ -82,6 +76,14 @@ const Input = forwardRef(function Input(
               disabled={isDisabled}
               {...props}
             />
+          )}
+           {errorMessage && (
+          <div className="" style={{textAlign:"left"}}>
+            <span className="small ms-1 text-danger" style={{textAlign:"left"}}>
+              {
+                errorMessage}
+            </span>
+            </div>
           )}
           
         </>

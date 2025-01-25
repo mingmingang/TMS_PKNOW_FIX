@@ -57,6 +57,10 @@ export default function Header({
     window.location.replace("/notifications"); // Redirect to login page
   };
 
+  const handleProfile = () => {
+    window.location.replace("/profile"); // Redirect to login page
+  };
+
   const handleDaftar = () => {
     window.location.href = ROOT_LINK + "/" + "daftar"; // Redirect to login page
   };
@@ -68,7 +72,6 @@ export default function Header({
   const handleBeranda = () => {
     window.location.href = ROOT_LINK + "/" + "beranda"; // Redirect to login page
   };
-
 
   useEffect(() => {
     if (showMenu) {
@@ -103,17 +106,37 @@ export default function Header({
   return (
     <div>
       <nav>
-        <div className="" onClick={handleBeranda}>
+        <div className="">
           <img
             src={logo}
             alt="Logo ASTRAtech"
             title="Logo ASTRAtech"
             width="190px"
-
-          
-         
           />
         </div>
+        {showButtonLoginDaftar && (
+        <div className="menu-profile-container">
+          <div className="menu">
+            <ul className="menu-center">
+              <li>
+                <a>
+                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}} onClick={handleBeranda}>Beranda</div>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}}>Class Training</div>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}}>Tentang Kami</div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        )}
 
         {showMenu && (
           <div className="menu-profile-container">
@@ -135,12 +158,12 @@ export default function Header({
                           {menu.icon && <i className={menu.icon}></i>}
                           <span>{menu.head}</span>
                           {/* Render a down-chevron icon if the menu is not "Beranda" */}
-                          {menu.head !== "Beranda" && (
+                          {/* {menu.head !== "Beranda" && (
                             <i
                               className="fas fa-chevron-down"
                               aria-hidden="true"
                             ></i>
-                          )}
+                          )} */}
                         </div>
                       </a>
 
@@ -176,7 +199,7 @@ export default function Header({
           </div>
         )}
 
-        <div className="profile">
+        <div className="profile" style={{marginRight:"-100px", cursor:"pointer"}}>
           {/* Conditionally render user info if showUserInfo is true */}
           {showUserInfo && (
             <div className="pengguna">
@@ -198,15 +221,18 @@ export default function Header({
             )}
 
             {isProfileDropdownVisible && (
-              <ul className="profile-dropdown">
+              <ul className="profile-dropdown" style={{marginLeft:"-180px", width:"250px"}}>
                 <li>
                   <span
                     onClick={handleNotification}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
                   >
-                    <i className="fas fa-bell" style={{ color: "#0A5EA8" }}></i>{" "}
+                    <div className="">
+                    <i className="fas fa-home mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
                     <span style={{ color: "#0A5EA8" }}>
-                      Notifikasi{" "}
+                      Dashboard Saya{" "}
+                      </span>
+                      </div>
                       <span
                         style={{
                           background: "red",
@@ -216,9 +242,108 @@ export default function Header({
                           color: "white",
                         }}
                       >
-                        {countNotifikasi}
+                        {countNotifikasi || 0} 
                       </span>
-                    </span>
+                  
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleNotification}
+                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                  >
+                    <div className="">
+                    <i className="fas fa-book mr-2" style={{ color: "#0A5EA8" }}></i>{" "}
+                    <span style={{ color: "#0A5EA8", textAlign:"left" }}>
+                      Kelas{" "}
+                      </span>
+                      </div>
+                      <span
+                        style={{
+                          background: "red",
+                          borderRadius: "50%",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                          color: "white",
+                        }}
+                      >
+                        {countNotifikasi || 0} 
+                      </span>
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleNotification}
+                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                  >
+                    <div className="">
+                    <i className="fas fa-tasks mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
+                    <span style={{ color: "#0A5EA8" }}>
+                      Program{" "}
+                      </span>
+                      </div>
+                      <span
+                        style={{
+                          background: "red",
+                          borderRadius: "50%",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                          color: "white",
+                        }}
+                      >
+                        {countNotifikasi || 0} 
+                      </span>
+                    
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleNotification}
+                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                  >
+                    <div className="">
+                    <i className="fas fa-money-bill mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
+                    <span style={{ color: "#0A5EA8" }}>
+                      Pembelian{" "}
+                      </span>
+                      </div>
+                      <span
+                        style={{
+                          background: "red",
+                          borderRadius: "50%",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                          color: "white",
+                        }}
+                      >
+                        {countNotifikasi || 0} 
+                      </span>
+                    
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleNotification}
+                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                  >
+                    <div className="">
+                    <i className="fas fa-bell mr-2" style={{ color: "#0A5EA8" }}></i>{" "}
+                    <span style={{ color: "#0A5EA8" }}>
+                      Notifikasi{" "}
+                      </span>
+                      </div>
+                      <span
+                        style={{
+                          background: "red",
+                          borderRadius: "50%",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                          color: "white",
+                        }}
+                      >
+                        {countNotifikasi || 0} 
+                      </span>
+                    
                   </span>
                 </li>
                 <li>
@@ -239,24 +364,37 @@ export default function Header({
           </div>
         </div>
 
-
         <div className="btnlogindaftar">
           {/* Conditionally render user info if showUserInfo is true */}
           {showButtonLoginDaftar && (
             <>
-            <div className="d-flex">
-            <div
-                className="daftar mt-2 mr-4"
-                style={{ color: "#0A5EA8", fontWeight: "600", cursor:"pointer" }}
-                onClick={handleDaftar} // Using a function to render the Daftar component
-              >
-                Daftar
-              </div>
+              <div className="d-flex">
+                <div
+                  className="daftar mt-2 mr-4"
+                  style={{
+                    color: "#0A5EA8",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleDaftar} // Using a function to render the Daftar component
+                >
+                  Daftar
+                </div>
 
-            <div className="login py-2 px-4" style={{background:"#0A5EA8", color:"white", borderRadius:"10px", fontWeight:"600", cursor:"pointer"}} onClick={handleLogin}>
-              Masuk
-            </div>
-            </div>
+                <div
+                  className="login py-2 px-4"
+                  style={{
+                    background: "#0A5EA8",
+                    color: "white",
+                    borderRadius: "10px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleLogin}
+                >
+                  Masuk
+                </div>
+              </div>
             </>
           )}
         </div>

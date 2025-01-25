@@ -2,6 +2,7 @@ import { ROOT_LINK, API_LINK, APPLICATION_ID } from "./Constants";
 import UseFetch from "./UseFetch";
 
 const CreateMenu = async (role) => {
+  
   try {
     
     const data = await UseFetch(API_LINK + "Utilities/GetListMenu", {
@@ -9,9 +10,7 @@ const CreateMenu = async (role) => {
       role: role,
       application: APPLICATION_ID,
     });
-
-    // console.log("list menu", data)
-
+    
     let lastHeadkey = "";
     const transformedMenu = [
       {
@@ -61,7 +60,9 @@ const CreateMenu = async (role) => {
       }
     });
     return transformedMenu;
-  } catch {
+  } catch  (error) {
+    console.error("Error in CreateMenu:", error.message);
+    console.error("Stack trace:", error.stack);
     return [];
   }
 };

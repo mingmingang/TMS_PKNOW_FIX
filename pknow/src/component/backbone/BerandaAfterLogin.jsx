@@ -197,8 +197,6 @@ function CommentCard({ name, role, text, img }) {
 export default function BerandaUtama() {
   return (
     <>
-      <Header showUserInfo={false} />
-
       <section className="sec1">
         <div className="ucapann">
           <div className="d-flex">
@@ -232,7 +230,7 @@ export default function BerandaUtama() {
         </div>
       </section>
 
-      <section className="sec3">
+      <section className="sec3" >
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div>
             <h4 style={{ color: "#0A5EA8", fontWeight: "600" }}>Kelas Pelatihan</h4>
@@ -267,7 +265,7 @@ export default function BerandaUtama() {
             Tentang ASTRAtech
           </button>
         </div>
-        <div className="mb-0" style={{ textAlign: "center", marginTop: "110px" }}>
+        <div className="mb-0" style={{ textAlign: "center", marginTop: "104px" }}>
           <img src={iconAstra} alt="Icon ASTRA" />
         </div>
       </section>
@@ -340,7 +338,7 @@ export default function BerandaUtama() {
         </div>
       </section>
 
-      <Footer />
+      
     </>
   );
 }

@@ -131,7 +131,7 @@ export default function DetailDaftarPustaka({ onChangePage, withID }) {
             </div>
             <div className="detail-informasi-daftar-pustaka">
               <h3>Deskripsi</h3>
-              <p>{fileData.deskripsi}</p>
+              <p style={{textAlign:"justify"}}>{fileData.deskripsi}</p>
             </div>
             <div className="detail-informasi-daftar-pustaka">
               <h3>Kata Kunci</h3>
