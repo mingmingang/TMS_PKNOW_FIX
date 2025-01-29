@@ -49,3 +49,67 @@ main{background-color: white;}
   margin-top: -14px;
   font-size: 15px;
 }
+
+.custom-datepicker {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #E2E8F0;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #4A5568;
+  box-shadow: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-datepicker::placeholder {
+  color: #A0AEC0; /* Warna placeholder */
+}
+
+.custom-datepicker:focus {
+  outline: none;
+  border-color: #3182CE; /* Warna biru fokus */
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.react-datepicker-popper {
+  z-index: 10; /* Agar berada di atas elemen lain */
+}
+
+.react-datepicker__header {
+  background-color: #3182CE; /* Warna biru terang */
+  color: white;
+  border-bottom: none;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #2B6CB0;
+}
+
+.react-datepicker__day--selected {
+  background-color: #2B6CB0; /* Warna biru gelap */
+  color: white;
+}
+
+.custom-datepicker {
+  width: 100%;
+  padding: 12px 15px; /* Padding konsisten dengan input lainnya */
+  border: 1px solid #E2E8F0; /* Sama seperti input lainnya */
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #4A5568;
+  box-shadow: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-datepicker::placeholder {
+  color: #A0AEC0; /* Placeholder abu-abu */
+}
+
+.custom-datepicker:focus {
+  outline: none;
+  border-color: #3182CE; /* Warna fokus biru */
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}

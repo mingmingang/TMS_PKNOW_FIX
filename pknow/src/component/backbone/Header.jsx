@@ -7,6 +7,7 @@ const activeURL = location.protocol + "//" + location.host + location.pathname;
 import { API_LINK, APPLICATION_ID, ROOT_LINK } from "../util/Constants";
 import UseFetch from "../util/UseFetch";
 import Daftar from "../page/daftar/Index";
+import he from 'he';
 
 function setActiveMenu(menu) {
   active_menu = menu;
@@ -21,10 +22,29 @@ export default function Header({
   showUserInfo = true, // Prop to conditionally show/hide user info
   showButtonLoginDaftar = true,
 }) {
-  const [activeMenu, setActiveMenu] = useState("beranda");
+  const [activeMenu, setActiveMenu] = useState(() => {
+    // Ambil state activeMenu dari localStorage
+    return localStorage.getItem("activeMenu") || "";
+  });
+
   const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [countNotifikasi, setCountNotifikasi] = useState("");
+
+  const handleMenuClick = (menu, url) => {
+    setActiveMenu(menu);
+    localStorage.setItem("activeMenu", menu); // Simpan activeMenu ke localStorage
+    window.location.replace(url); // Navigasi menggunakan window.location.replace
+  };
+
+  const getInitials = (name) => {
+    if (!name) return "";
+    const parts = name.split(" ");
+    return parts
+      .map((part) => part[0]?.toUpperCase())
+      .join("")
+      .slice(0, 2); // Ambil maksimal 2 karakter
+  };
 
   // Icon mapping for sub-menu items
   const iconMapping = {
@@ -54,7 +74,28 @@ export default function Header({
   };
 
   const handleNotification = () => {
+    localStorage.removeItem("activeMenu");
     window.location.replace("/notifications"); // Redirect to login page
+  };
+
+  const handleDashboard = () => {
+    localStorage.removeItem("activeMenu");
+    window.location.replace("/dashboard/profil"); // Redirect to login page
+  };
+
+  const handleKelas = () => {
+    localStorage.removeItem("activeMenu");
+    window.location.replace("/dashboard/kelas_saya"); // Redirect to login page
+  };
+
+  const handleSertifikat = () => {
+    localStorage.removeItem("activeMenu");
+    window.location.replace("/dashboard/sertifikat"); // Redirect to login page
+  };
+
+  const handlePembelian = () => {
+    localStorage.removeItem("activeMenu");
+    window.location.replace("/dashboard/pembelian"); // Redirect to login page
   };
 
   const handleProfile = () => {
@@ -62,15 +103,21 @@ export default function Header({
   };
 
   const handleDaftar = () => {
+    localStorage.removeItem("activeMenu");
     window.location.href = ROOT_LINK + "/" + "daftar"; // Redirect to login page
   };
 
   const handleLogin = () => {
+    localStorage.removeItem("activeMenu");
     window.location.href = ROOT_LINK + "/" + "login"; // Redirect to login page
   };
 
   const handleBeranda = () => {
     window.location.href = ROOT_LINK + "/" + "beranda"; // Redirect to login page
+  };
+
+  const handleTentangKami = () => {
+    window.location.href = ROOT_LINK + "/" + "tentang_pknow"; // Redirect to login page
   };
 
   useEffect(() => {
@@ -115,27 +162,59 @@ export default function Header({
           />
         </div>
         {showButtonLoginDaftar && (
-        <div className="menu-profile-container">
-          <div className="menu">
-            <ul className="menu-center">
-              <li>
-                <a>
-                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}} onClick={handleBeranda}>Beranda</div>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}}>Class Training</div>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <div className="menu-item" style={{color:"#095DA8", cursor:"pointer"}}>Tentang Kami</div>
-                </a>
-              </li>
-            </ul>
+          <div className="menu-profile-container">
+            <div className="menu">
+              <ul className="menu-center">
+                <li>
+                  <a
+                    className={`menu-item ${
+                      activeMenu === "beranda" ? "active" : ""
+                    }`}
+                    onClick={() => handleMenuClick("beranda", "beranda")}
+                    style={{
+                      color: "#095DA8",
+                      cursor: "pointer",
+                      position: "relative",
+                    }}
+                  >
+                    Beranda
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={`menu-item ${
+                      activeMenu === "landing_training" ? "active" : ""
+                    }`}
+                    onClick={() => handleMenuClick("landing_training", "landing_training")}
+                    style={{
+                      color: "#095DA8",
+                      cursor: "pointer",
+                      position: "relative",
+                    }}
+                  >
+                    Class Training
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={`menu-item ${
+                      activeMenu === "tentang_pknow" ? "active" : ""
+                    }`}
+                    onClick={() =>
+                      handleMenuClick("tentang_pknow", "tentang_pknow")
+                    }
+                    style={{
+                      color: "#095DA8",
+                      cursor: "pointer",
+                      position: "relative",
+                    }}
+                  >
+                    Tentang Kami
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
         )}
 
         {showMenu && (
@@ -144,46 +223,58 @@ export default function Header({
               <ul className="menu-center">
                 {listMenu.map((menu) => {
                   if (menu.isHidden) return null;
-                  const isActive = activeURL === menu.link;
-
+                  const isActive =
+                    localStorage.getItem("activeMenu") === menu.head;
+                  console.log(
+                    "Active menu:",
+                    localStorage.getItem("activeMenu")
+                  );
                   return (
-                    <li key={menu.headkey} className={isActive ? "active" : ""}>
+                    <li
+                      key={menu.headkey}
+                      className={isActive ? "active" : ""} // Tambahkan kelas "active"
+                    >
                       <a
                         href={menu.link}
-                        onClick={() => setActiveMenu(menu.head)}
-                        // className={isActive ? "active" : ""}
+                        onClick={(e) => {
+                          e.preventDefault(); // Hindari reload
+                          localStorage.setItem("activeMenu", menu.head); // Simpan menu aktif
+                          setActiveMenu(menu.head); // Update state
+                          window.location.replace(menu.link);
+                          // Redirect ke link
+                        }}
+                        className={`menu-item ${isActive ? "active" : ""}`}
                       >
-                        <div className="menu-item">
-                          {/* Render icon for main menu */}
+                        <div className="menu-item-content">
+                          {/* Render ikon jika ada */}
                           {menu.icon && <i className={menu.icon}></i>}
                           <span>{menu.head}</span>
-                          {/* Render a down-chevron icon if the menu is not "Beranda" */}
-                          {/* {menu.head !== "Beranda" && (
-                            <i
-                              className="fas fa-chevron-down"
-                              aria-hidden="true"
-                            ></i>
-                          )} */}
                         </div>
                       </a>
 
-                      {/* Render sub-menu if it exists */}
+                      {/* Render sub-menu jika ada */}
                       {menu.sub && menu.sub.length > 0 && (
                         <ul className="dropdown-content">
                           {menu.sub.map((sub) => {
-                            // Determine the icon class based on sub-menu title
-                            const iconClass = iconMapping[sub.title] || "";
+                            const subIconClass = iconMapping[sub.title] || "";
 
                             return (
                               <li key={sub.link}>
                                 <a
                                   href={sub.link}
-                                  onClick={() =>
-                                    setActiveMenu(`${menu.head} - ${sub.title}`)
-                                  }
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    localStorage.setItem(
+                                      "activeMenu",
+                                      `${menu.head} - ${sub.title}`
+                                    );
+                                    window.location.replace(sub.link);
+                                  }}
                                 >
-                                  {/* Render the icon if iconClass is set */}
-                                  {iconClass && <i className={iconClass}></i>}
+                                  {/* Render ikon sub-menu jika ada */}
+                                  {subIconClass && (
+                                    <i className={subIconClass}></i>
+                                  )}
                                   <span>{sub.title}</span>
                                 </a>
                               </li>
@@ -199,16 +290,19 @@ export default function Header({
           </div>
         )}
 
-        <div className="profile" style={{marginRight:"-100px", cursor:"pointer"}}>
+        <div
+          className="profile"
+          style={{ marginRight: "-100px", cursor: "pointer" }}
+        >
           {/* Conditionally render user info if showUserInfo is true */}
           {showUserInfo && (
             <div className="pengguna">
-              <h3>{userProfile.name}</h3>
+              <h3>{he.decode(userProfile.name)}</h3>
               <h4>{userProfile.role}</h4>
               <p>Terakhir Masuk: {userProfile.lastLogin}</p>
             </div>
           )}
-
+           {showUserInfo && (
           <div
             className="fotoprofil"
             onMouseEnter={() => setProfileDropdownVisible(true)} // Show dropdown on hover
@@ -217,133 +311,135 @@ export default function Header({
             {userProfile.photo ? (
               <img src={userProfile.photo} alt="Profile" />
             ) : (
-              <p></p>
+              <div
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  backgroundColor: "#e0e7ff",
+                  color: "#1a73e8",
+                  fontWeight: "bold",
+                  fontSize: "24px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: "0 auto 10px",
+                }}
+              >
+                {getInitials(userProfile.name)}
+              </div>
             )}
 
             {isProfileDropdownVisible && (
-              <ul className="profile-dropdown" style={{marginLeft:"-180px", width:"250px"}}>
+              <ul
+                className="profile-dropdown"
+                style={{ marginLeft: "-180px", width: "250px" }}
+              >
                 <li>
                   <span
-                    onClick={handleNotification}
-                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                    onClick={handleDashboard}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
                     <div className="">
-                    <i className="fas fa-home mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
-                    <span style={{ color: "#0A5EA8" }}>
-                      Dashboard Saya{" "}
+                      <i
+                        className="fas fa-home mr-1"
+                        style={{ color: "#0A5EA8" }}
+                      ></i>{" "}
+                      <span style={{ color: "#0A5EA8" }}>Dashboard Saya </span>
+                    </div>
+                   
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleKelas}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div className="">
+                      <i
+                        className="fas fa-book mr-2"
+                        style={{ color: "#0A5EA8" }}
+                      ></i>{" "}
+                      <span style={{ color: "#0A5EA8", textAlign: "left" }}>
+                        Kelas{" "}
                       </span>
-                      </div>
-                      <span
-                        style={{
-                          background: "red",
-                          borderRadius: "50%",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          color: "white",
-                        }}
-                      >
-                        {countNotifikasi || 0} 
-                      </span>
+                    </div>
+                    
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handleSertifikat}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div className="">
+                      <i
+                        className="fas fa-award mr-1"
+                        style={{ color: "#0A5EA8" }}
+                      ></i>{" "}
+                      <span style={{ color: "#0A5EA8" }}>Sertifikat </span>
+                    </div>
+                   
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={handlePembelian}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div className="">
+                      <i
+                        className="fas fa-money-bill mr-1"
+                        style={{ color: "#0A5EA8" }}
+                      ></i>{" "}
+                      <span style={{ color: "#0A5EA8" }}>Pembelian </span>
+                    </div>
                   
                   </span>
                 </li>
                 <li>
                   <span
                     onClick={handleNotification}
-                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
                     <div className="">
-                    <i className="fas fa-book mr-2" style={{ color: "#0A5EA8" }}></i>{" "}
-                    <span style={{ color: "#0A5EA8", textAlign:"left" }}>
-                      Kelas{" "}
-                      </span>
-                      </div>
-                      <span
-                        style={{
-                          background: "red",
-                          borderRadius: "50%",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          color: "white",
-                        }}
-                      >
-                        {countNotifikasi || 0} 
-                      </span>
-                  </span>
-                </li>
-                <li>
-                  <span
-                    onClick={handleNotification}
-                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
-                  >
-                    <div className="">
-                    <i className="fas fa-tasks mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
-                    <span style={{ color: "#0A5EA8" }}>
-                      Program{" "}
-                      </span>
-                      </div>
-                      <span
-                        style={{
-                          background: "red",
-                          borderRadius: "50%",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          color: "white",
-                        }}
-                      >
-                        {countNotifikasi || 0} 
-                      </span>
-                    
-                  </span>
-                </li>
-                <li>
-                  <span
-                    onClick={handleNotification}
-                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
-                  >
-                    <div className="">
-                    <i className="fas fa-money-bill mr-1" style={{ color: "#0A5EA8" }}></i>{" "}
-                    <span style={{ color: "#0A5EA8" }}>
-                      Pembelian{" "}
-                      </span>
-                      </div>
-                      <span
-                        style={{
-                          background: "red",
-                          borderRadius: "50%",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          color: "white",
-                        }}
-                      >
-                        {countNotifikasi || 0} 
-                      </span>
-                    
-                  </span>
-                </li>
-                <li>
-                  <span
-                    onClick={handleNotification}
-                    style={{ cursor: "pointer", display:"flex", justifyContent:"space-between" }}
-                  >
-                    <div className="">
-                    <i className="fas fa-bell mr-2" style={{ color: "#0A5EA8" }}></i>{" "}
-                    <span style={{ color: "#0A5EA8" }}>
-                      Notifikasi{" "}
-                      </span>
-                      </div>
-                      <span
-                        style={{
-                          background: "red",
-                          borderRadius: "50%",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          color: "white",
-                        }}
-                      >
-                        {countNotifikasi || 0} 
-                      </span>
-                    
+                      <i
+                        className="fas fa-bell mr-2"
+                        style={{ color: "#0A5EA8" }}
+                      ></i>{" "}
+                      <span style={{ color: "#0A5EA8" }}>Notifikasi </span>
+                    </div>
+                    <span
+                      style={{
+                        background: "red",
+                        borderRadius: "50%",
+                        paddingLeft: "5px",
+                        paddingRight: "5px",
+                        color: "white",
+                      }}
+                    >
+                      {countNotifikasi || 0}
+                    </span>
                   </span>
                 </li>
                 <li>
@@ -362,6 +458,7 @@ export default function Header({
               </ul>
             )}
           </div>
+          )}
         </div>
 
         <div className="btnlogindaftar">

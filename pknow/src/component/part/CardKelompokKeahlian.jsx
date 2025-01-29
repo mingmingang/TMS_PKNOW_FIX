@@ -241,7 +241,7 @@ function CardKelompokKeahlian({
         );
       } else if (config.footer === "Menunggu") {
         cardContent = (
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between ">
             {showStatusText ? (
                     <div className="" style={{display:"flex"}}>
                    {footerStatus}
@@ -287,10 +287,10 @@ function CardKelompokKeahlian({
         );
       } else {
         cardContent = (
-          <div className="d-flex justify-content-between" style={{width:"100%"}}>
+          <div className="d-flex justify-content-between mt-2">
             {showStatusText ? (
-                    <div className="" style={{width:"100%" }}>
-                      <span style={{ fontSize: "14px"}}>{footerStatus}</span>
+                    <div className="d-flex mt-2">
+                     <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p>
                     </div>
                   ) : (
                     <a href="#selengkapnya" className="text-blue-600" style={{ textDecoration: "none" }}>
@@ -300,41 +300,14 @@ function CardKelompokKeahlian({
             <div className="d-flex" style={{ width: "10%", marginTop:"15px" }}>
             {showMenu ? (
     <>
-      <Icon
-        name="edit"
-        type="Bold"
-        cssClass="btn px-2 py-0 text-primary"
-        title="Ubah data"
-        onClick={() => onChangePage("edit", data)}
-      />
-      <Icon
-        name="list"
-        type="Bold"
-        cssClass="btn px-2 py-0 text-primary"
-        title="Lihat detail Kelompok Keahlian"
-        onClick={() => onChangePage("detailPublish", data)}
-      />
-      <div
-        className="form-check form-switch py-0 ms-2"
-        style={{ width: "fit-content" }}
-      >
-        <Input
-          type="checkbox"
-          title="Aktif / Nonaktif"
-          className="form-check-input"
-          checked={data.status === "Aktif"}
-          onChange={() =>
-            handleStatusChange(
-              data,
-              data.status === "Aktif" ? "Tidak Aktif" : "Aktif"
-            )
-          }
-        />
-        <label
-          className="form-check-label"
-          htmlFor="flexSwitchCheckDefault"
-        ></label>
-      </div>
+      <button
+          className="bg-blue-100 text-white px-3 py-2 rounded-full d-flex align-items-center"
+          aria-label={`Action for ${title}`}
+          onClick={() => onChangePage("add", data)}
+          style={{border:"none", borderRadius:"10px", padding:"0px 10px", marginLeft:"-60px", marginTop:"-20px", background:"#0E6EFE"}}
+        >
+          <i className="fas fa-shopping-cart mr-2"></i>Beli
+        </button>
     </>
   ) : <div className=""> {ketButton && (
     <div className="d-flex justify-content-end" style={{marginLeft:"-60px"}}>
@@ -374,15 +347,20 @@ function CardKelompokKeahlian({
 
         <div className="pemilik ">
             <div className="prodi" style={{fontSize:"14px"}}>
-              <FontAwesomeIcon icon={showProdi ? faGraduationCap : faPeopleGroup} className="icon-style" />
-              <p className="text-gray-700" style={{ marginLeft: "15px", width:"100%", fontSize:"15px" }}>
+              <FontAwesomeIcon icon={showProdi ? faGraduationCap : faPeopleGroup} className="icon-style" style={{color:"#4D4D4D"}} />
+              <p className="text-gray-700" style={{ marginLeft: "15px", width:"100%", fontSize:"15px" , color:"#4D4D4D"}}>
                 {showProdi ? data.prodi.nama : anggota}
               </p>
             </div>
             <div className="userProdi">
-              {personInCharge}
+            <i className="fas fa-award" style={{fontSize:"18px", paddingLeft:"0px", color:"#4D4D4D"}}></i>  <p className="" style={{ marginLeft: "18px", width:"100%", fontSize:"15px", color:"#4D4D4D" }}>Sertifikat</p>
+            </div>
+            <div className="userProdi">
+            <i className="fas fa-tag" style={{fontSize:"18px", paddingLeft:"0px", color:"#4D4D4D"}}></i>  <p className="" style={{ marginLeft: "18px", width:"100%", fontSize:"15px", color:"#4D4D4D" }}>Rp. 100.000,00</p>
             </div>
         </div>
+
+      
 
         <div className="deskripsi-container " style={{ alignItems: "center", width:"100%" }}>
               <p className="deskripsi" style={{ marginBottom: "10px" }}>
@@ -406,7 +384,7 @@ function CardKelompokKeahlian({
               </p>
         </div>
 
-        <div className="card-footer status-open mb-4 mr-3 ml-3">
+        <div className="card-footer">
                     <div className="card-content" style={{alignItems:"center"}}>
                     {cardContent}
                     </div>

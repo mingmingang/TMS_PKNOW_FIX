@@ -1,0 +1,172 @@
+.tentang-kami-container {
+    font-family: Arial, sans-serif;
+    padding-top: 80px;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background-color: #005baa;
+    color: white;
+    display: flex;
+    min-height: 10vh;
+    align-items: stretch; /* Membuat konten mengikuti tinggi section */
+    padding: 0 20px; /* Hilangkan padding atas dan bawah */
+    height: 50vh; /* Section setinggi layar penuh */
+    box-sizing: border-box;
+  }
+  
+  .hero-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Pastikan wrapper memenuhi lebar penuh */
+  }
+  
+  .hero-content {
+    flex: 1;
+    padding: 20px; /* Tambahkan padding untuk spasi */
+  }
+  
+  .hero-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .hero-description {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+  }
+  
+  .hero-image-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Posisikan gambar di sisi kanan */
+    align-items: flex-end; /* Menempelkan gambar ke bawah */
+    height: 100%; /* Ikuti tinggi dari section */
+  }
+  
+  .hero-image {
+    max-width: 100%;
+    height: auto;
+    align-self: flex-end; /* Pastikan gambar menempel di bawah */
+  }
+
+  .point{
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  /* Nilai Kami Section */
+  .nilai-kami-section {
+    background-color: white;
+    padding: 0px 20px;
+    display: flex; /* Menggunakan Flexbox */
+    justify-content: center; /* Memusatkan konten */
+  }
+  
+  .nilai-content {
+    display: flex; /* Gambar dan teks berada dalam satu baris */
+    align-items: center; /* Vertikal sejajar */
+    max-width: 1200px; /* Batas lebar maksimum */
+    gap: 40px; /* Jarak antara gambar dan teks */
+  }
+  
+  .nilai-image-wrapper {
+    flex: 1; /* Gambar mengisi ruang proporsional */
+  }
+  
+  .nilai-image {
+    width: 100%; /* Gambar menggunakan 100% dari container */
+    max-width: 300px; /* Maksimum lebar gambar */
+    height: auto;
+    display: block; /* Menghindari elemen inline */
+    margin: 0 auto; /* Pusatkan jika diperlukan */
+  }
+  
+  .nilai-text-wrapper {
+    font-family: Arial, sans-serif;
+    flex: 2; /* Teks mengisi ruang lebih besar */
+    text-align: left; /* Teks rata kiri */
+  }
+  
+  .section-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #08549f;
+  }
+  
+  .section-description {
+    font-size: 20px;
+    color: #666;
+    line-height: 1.8;
+  }
+  
+  /* Partner Kami Section */
+  .partner-kami-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: white;
+  }
+  
+  .partner-logo {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+  }
+  
+  /* Footer CTA Section */
+  .footer-cta-section {
+    height: 40vh;
+    background-color: #08549f;
+    color: white;
+    text-align: center;
+  }
+  
+  .footer-cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .cta-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .cta-description {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .cta-button {
+    padding: 10px 20px;
+    background-color: white;
+    color: #08549f;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .cta-button:hover {
+    background-color: #f4f4f4;
+  }
+  
+  .footer-cta-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 40vh;
+  }
+  
+  .footer-cta-image {
+    min-width: 100%; /* Gambar memenuhi lebar container */
+    max-width: auto; /* Atur tinggi sesuai kebutuhan */
+    object-fit: cover; /* Gambar akan dipotong agar sesuai ukuran tanpa distorsi */
+  }
+  

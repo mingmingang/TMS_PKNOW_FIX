@@ -7,26 +7,15 @@
 .sec1 {
     display: flex;
     width: 100%; /* Changed to percentage for responsiveness */
-    height: 60vh;
     background-size: cover;
 }
 
 .sec2 {
     width: 100%; /* Changed to percentage for responsiveness */
-    height: 60vh;
     background-size: cover;
     background-color: var(--secondary-color);
 }
 
-.sec3 {
-    padding-top: 40px;
-    padding-left: 80px;
-    padding-right: 80px;
-    width: 100%; /* Changed to percentage for responsiveness */
-    height: 60vh;
-    background-size: cover;
-    background-color: white;
-}
 
 .sec4 {
     background-image: url('../assets/bgBeranda.png');
@@ -40,18 +29,30 @@
     padding-left: 80px;
     padding-right: 80px;
     width: 100%; /* Changed to percentage for responsiveness */
-    height: 60vh;
     background-size: cover;
     background-color: white;
 }
 
 .sec4 {
     background-image: url('../assets/bgBeranda.png');
-    width: 100%; /* Changed to percentage for responsiveness */
-    height: 100vh;
+    margin-top: 320px;
+    width: 100%;
     background-size: cover;
     background-color: var(--secondary-color);
+    position: relative; /* Tambahkan ini untuk mengatur posisi elemen anak */
+    display: flex;
+    flex-direction: column; /* Mengatur arah elemen anak secara vertikal */
+    justify-content: space-between; /* Membuat elemen tersebar antara atas dan bawah */
+    min-height: 100vh; /* Pastikan tinggi minimum menyesuaikan dengan viewport */
 }
+
+.sec4 img {
+    max-width: 100%; /* Untuk responsivitas */
+    height: auto; /* Pertahankan rasio aspek */
+    align-self: center; /* Posisikan gambar di tengah horizontal */
+    margin-top: auto; /* Pastikan gambar berada di bawah */
+}
+
 
 .sec5 {
     display: flex;
@@ -197,23 +198,17 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-/* Beranda Prodi CSS */
-
-
-
-
-
-
-
-
-/* Beranda Mahasiswa CSS */
+.custom-pagination .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #d3d3d3; /* Warna default */
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .custom-pagination .swiper-pagination-bullet-active {
+    background: #0e6efe; /* Warna saat aktif */
+  }
+  

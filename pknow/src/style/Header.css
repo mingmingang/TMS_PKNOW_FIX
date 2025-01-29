@@ -78,6 +78,8 @@ nav {
     color: var(--primary-color); /* Change text color if active */
 }
 
+
+
 /* Dropdown Styles */
 .dropdown-content {
     position: absolute; /* Position dropdown absolutely */

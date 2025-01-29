@@ -42,6 +42,14 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      window.location.href = `${ROOT_LINK}/beranda_eksternal`; // Redirect ke halaman utama
+    }
+  }, []);
+
+  
+  useEffect(() => {
     loadCaptcha(); // Muat captcha saat komponen di-mount
   }, []);
 
@@ -92,8 +100,20 @@ export default function Login() {
       return null;
     }
   };
-  
 
+  const [draftProfile, setDraftProfile] = useState({}); // State sementara untuk draft
+  const [preview, setPreview] = useState(""); // State untuk preview gambar
+  const fileGambarRef = useRef(null);
+  const [profile, setProfile] = useState({
+    ext_id: "",
+    NamaLengkap: "",
+    JenisKelamin: "",
+    NomorTelepon: "",
+    Email: "",
+    TanggalLahir: "",
+    gambar: "",
+  });
+  
   const handleGoogleSignIn = async (response) => {
     console.log("Response", response);
     try {
@@ -110,14 +130,16 @@ export default function Login() {
   
       console.log("userData", userData);
   
-      const { email, name } = userData;
+      const { email, name, picture } = userData;
       const loginData = {
         email,
         namaLengkap: name,
         gender: "",
         noTelp: "",
         createdBy: email,
+        gambar: picture
       };
+
       console.log("login data", loginData);
       try {
         // Kirim data pengguna ke server
@@ -131,7 +153,7 @@ export default function Login() {
         });
   
         const data = await response.json();
-        console.log("hasil login", data);
+
   
         // Handle berbagai kondisi berdasarkan respons server
         if (data === "ERROR") {
@@ -149,12 +171,13 @@ export default function Login() {
         }
   
         if (data.Status === "Berhasil Mendaftarkan Akun Google") {
+
           Swal.fire({
             title: "Berhasil!",
             text: "Login Berhasil.",
             icon: "success"
           }).then(() => {
-            processLogin(email, name, "Eksternal");
+            processLogin(email, name, "Eksternal", picture);
           });
         } else {
           Swal.fire({
@@ -162,7 +185,7 @@ export default function Login() {
             text: "Login Berhasil.",
             icon: "success"
           }).then(() => {
-            processLogin(email, name, "Eksternal");
+            processLogin(email, name, "Eksternal", picture);
           });
         }
       } catch (error) {
@@ -176,8 +199,9 @@ export default function Login() {
     }
   };
   
-  const processLogin = async (email, name, peran) => {
+  const processLogin = async (email, name, peran, gambar) => {
     try {
+      // Generate JWT Token
       const role = "ROL07"; // Sesuaikan dengan role default atau dari server
       const token = await UseFetch(`${API_LINK}Utilities/CreateJWTToken`, {
         username: email,
@@ -196,6 +220,7 @@ export default function Login() {
         role,
         nama: name,
         peran,
+        profile: gambar,
       };
   
       console.log("Data yang disimpan di cookie:", userInfo);
@@ -215,10 +240,17 @@ export default function Login() {
       }[peran];
   
       window.location.href = `${ROOT_LINK}/${redirectPath}`;
+  
+      // Mencegah navigasi "back" browser
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = () => {
+        window.history.pushState(null, null, window.location.href);
+      };
     } catch (error) {
       console.error("Error during login process:", error.message);
     }
   };
+  
   
   const handleLoginError = (error) => {
     window.scrollTo(0, 0);
@@ -340,6 +372,10 @@ export default function Login() {
           }[peran];
 
           window.location.href = ROOT_LINK + "/" + "beranda_eksternal";
+          window.history.pushState(null, null, window.location.href);
+          window.onpopstate = () => {
+            window.history.pushState(null, null, window.location.href);
+          };
         }
       } catch (error) {
         window.scrollTo(0, 0);

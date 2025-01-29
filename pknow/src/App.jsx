@@ -8,18 +8,20 @@ import CreateRoute from "./component/util/CreateRoute.jsx";
 import profile from "./assets/avatar-pknow.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 import Login from "./component/page/login/Index";
 import Logout from "./component/page/logout/Index";
 import Header from "./component/backbone/Header";
 import NotFound from "./component/page/not-found/Index.jsx";
 import Footer from "./component/backbone/Footer.jsx";
-import 'select2/dist/css/select2.min.css';  // Import Select2 CSS
-import 'select2/dist/js/select2.min.js'; 
-import Daftar from "./component/page/daftar/Index.jsx";  
+import "select2/dist/css/select2.min.css"; // Import Select2 CSS
+import "select2/dist/js/select2.min.js";
+import Daftar from "./component/page/daftar/Index.jsx";
 import Beranda from "./component/backbone/BerandaUtama.jsx";
-
+import TentangKami from "./component/page/tentangkami/tentangkamibeforelogin/Root.jsx";
+import Kelas from "./component/page/kelas/kelasbeforelogin/Root.jsx";
+import {decode} from 'he';
 
 export default function App() {
   const [listMenu, setListMenu] = useState([]);
@@ -27,17 +29,21 @@ export default function App() {
   const isLogoutPage = window.location.pathname.includes("logout");
   const isDaftar = window.location.pathname.includes("daftar");
   const isLogin = window.location.pathname.includes("login");
+  const isTentangKami = window.location.pathname.includes("tentang_pknow");
+  const isKelas = window.location.pathname.includes("landing_training");
   const cookie = Cookies.get("activeUser");
   console.log("Cookie yang diterima:", cookie);
-  if (isDaftar) return <Daftar/>;
-  if (isLogin) return <Login/>;
+  if (isDaftar) return <Daftar />;
+  if (isLogin) return <Login />;
+  if (isTentangKami) return <TentangKami />;
+  if (isKelas) return <Kelas />;
   if (isLogoutPage) return <Logout />;
   else if (!cookie) return <Beranda />;
-  else if (isDaftar) return <Daftar/>;
+  else if (isDaftar) return <Daftar />;
   else {
     const userInfo = JSON.parse(decryptId(cookie));
-    console.log("user info", userInfo)
-    
+    console.log("user info", userInfo);
+
     useEffect(() => {
       const getMenu = async () => {
         const menu = await CreateMenu(userInfo.role);
@@ -74,34 +80,34 @@ export default function App() {
       dateStyle: "long",
       timeStyle: "short",
     });
-  
+
     const userProfile = {
-      name: userInfo.nama,
+      name: decode(userInfo.nama),
       role: userInfo.username,
       lastLogin: currentDateTime,
-      photo:profile
+      photo: userInfo.profile,
     };
 
     // console.log("listRoute before RouterProvider:", listRoute);
-    
+
     return (
       <>
         {listRoute.length > 0 && (
           <>
             <Header
-        userProfile={userProfile} 
-        listMenu={listMenu}
-        isProfileDropdownVisible={true}
-        showMenu={true}
-        showButtonLoginDaftar={false}
-      />   
+              userProfile={userProfile}
+              listMenu={listMenu}
+              isProfileDropdownVisible={true}
+              showMenu={true}
+              showButtonLoginDaftar={false}
+            />
             <RouterProvider
-                  router={createBrowserRouter(listRoute, {
-                    basename: BASE_ROUTE,
-                  })}
-                />
+              router={createBrowserRouter(listRoute, {
+                basename: BASE_ROUTE,
+              })}
+            />
             <div className="footer">
-              <Footer/>
+              <Footer />
             </div>
           </>
         )}

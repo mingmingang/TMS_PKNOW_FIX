@@ -9,9 +9,10 @@ import sample from "../../assets/sampel55.png";
 import Footer from "./Footer";
 import Header from "./Header";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
+import "swiper/css/pagination";
 import "../../style/Beranda.css";
 import "../../style/Slider.css";
 import sliderLayananImg from "../../assets/slider.png";
@@ -22,7 +23,10 @@ import sampel3 from "../../assets/girll.png";
 import sampel4 from "../../assets/girl3.png";
 import sampel5 from "../../assets/girl4.png";
 import berita1 from "../../assets/berita1.png";
-
+import UseFetch from "../util/UseFetch"; // Pastikan lokasi `UseFetch` sesuai dengan folder Anda
+import { API_LINK } from "../util/Constants"; 
+import { useEffect, useRef, useState } from "react";
+import {decode} from 'he';
 
 const sliderData = [
   { name: "Adila Ilma", role: "UX Designer", company: "CrescentRating", img: sample },
@@ -34,12 +38,135 @@ const sliderData = [
 
 
 const sliderBerita = [
-  { name: "Program Talenta Digital 2022 Jangkau 200 Ribu Milenial", role: "Program Talenta Digital 2022 Jangkau 200 Ribu Milenial", company: "Detik.Com", img: berita1 },
-  { name: "Infografis Terima Kasih Coach Shin Tae-yong dan Patrick", role: "Infografis Terima Kasih Coach Shin Tae-yong", company: "News.com", img: sampel2 },
-  { name: "Pendorong Terjadinya Globalisasi yaitu Adanya Pengembangan ", role: "Pendorong Terjadinya Globalisasi yaitu Adanya Pengembangan", company: "IDN.News", img: sampel3 },
+  { name: "Program Talenta Digital 2022 Jangkau 200 Ribu", role: "Program Talenta Digital 2022 Jangkau 200 Ribu Milenial", company: "Detik.Com", img: berita1 },
+  { name: "Infografis Terima Kasih Coach Shin Tae-yong", role: "Infografis Terima Kasih Coach Shin Tae-yong", company: "News.com", img: sampel2 },
+  { name: "Pendorong Terjadinya Globalisasi   ", role: "Pendorong Terjadinya Globalisasi", company: "IDN.News", img: sampel3 },
   { name: "Dialus Andari", role: "UI/UX Designer", company: "Liputan6.com", img: sampel4 },
   { name: "Hutami Septiana Raswaty", role: "Digital Product Manager", company: "Daily Social", img: sampel5 },
 ];
+
+
+function SliderPelatihan() {
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [sliderData, setSliderData] = useState([]);
+  const [currentFilterAktif, setCurrentFilterAktif] = useState({
+    page: 1,
+    query: "",
+    sort: "[Nama Program] desc",
+    status: "Aktif",
+  });
+
+  const getListKKAktif = async () => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      const data = await UseFetch(API_LINK + "Program/GetProgramAll", currentFilterAktif);
+      if (!data || data === "ERROR") {
+        throw new Error("Terjadi kesalahan: Gagal mengambil data Program.");
+      }
+      setSliderData(data);
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e.message);
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getListKKAktif();
+  }, [currentFilterAktif]);
+
+  return (
+    <div className="slider-container" style={{ background: "transparent", height: "250px" }}>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isError ? (
+        <p>Gagal memuat data.</p>
+      ) : (
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={2}
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            el: ".custom-pagination",
+            clickable: true,
+          }}
+          modules={[Autoplay, Pagination]}
+          breakpoints={{
+            320: { slidesPerView: 1, spaceBetween: 10 },
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 30 },
+          }}
+        >
+          {sliderData.map((item, index) => (
+            <SwiperSlide key={item.Key || index}>
+              <div style={{ border: "none", height: "80%", padding: "20px 10px" }}>
+                <div style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", padding: "20px", borderRadius: "20px" }}>
+                  <img
+                    src={`${API_LINK}Upload/GetFile/${item.Gambar}`}
+                    alt={item["Nama Program"]}
+                    className="card-img"
+                    style={{
+                      borderRadius: "10px",
+                      objectFit: "cover",
+                      height: "180px",
+                      width: "100%",
+                    }}
+                  />
+                  <div className="card-info">
+                    <h4 style={{ fontWeight: "bold", fontSize: "18px" }}>{decode(item["Nama Program"])}</h4>
+                    <p style={{ color: "#667085" }}> {decode(item.Deskripsi).substring(0, 100)}
+              {item.Deskripsi.length > 100 && "..."}</p>
+                    <div style={{ display: "flex", alignItems: "center", margin: "10px 0", justifyContent:"space-between" }}>
+                      <div className="">
+                      <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
+                      <span style={{ color: "#f5a623", marginRight: "5px" }}>⭐⭐⭐⭐</span>
+                      <span style={{ fontSize: "12px", color: "#667085", marginLeft: "5px" }}>
+                      (16,325)
+                      </span>
+                 
+                    <h5 style={{ color: "#08549F" }}>{"Rp. 50.000"}</h5>
+                    </div>
+                    <div className="">
+                    <button
+                      style={{
+                        backgroundColor: "#0E6EFE",
+                        color: "white",
+                        padding: "8px 15px",
+                        borderRadius: "10px",
+                        border: "none",
+                        marginTop: "10px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      + Gabung
+                    </button>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      <div
+        className="custom-pagination"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20px",
+        }}
+      ></div>
+    </div>
+  );
+}
 
 const sliderLayanan = [
   { img: sliderLayananImg },
@@ -107,10 +234,15 @@ function Slider() {
   );
 }
 
+const handleKelas = () => {
+  window.location.replace("/kelas"); // Redirect to login page
+};
+
+
 
 function SliderLayanan() {
   return (
-    <div className="slider-container" style={{ background: "transparent", marginBottom: "200px", height: "500px" }}>
+    <div className="slider-container" style={{ background: "transparent" }}>
       <Swiper
         spaceBetween={20}
         slidesPerView={1} // Set selalu 1 slide per view
@@ -197,6 +329,7 @@ function CommentCard({ name, role, text, img }) {
 export default function BerandaUtama() {
   return (
     <>
+
       <section className="sec1">
         <div className="ucapann">
           <div className="d-flex">
@@ -230,7 +363,7 @@ export default function BerandaUtama() {
         </div>
       </section>
 
-      <section className="sec3" >
+      <section className="sec3">
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div>
             <h4 style={{ color: "#0A5EA8", fontWeight: "600" }}>Kelas Pelatihan</h4>
@@ -238,37 +371,57 @@ export default function BerandaUtama() {
               Mari bergabung di kelas ternama kami, ilmu yang diberikan pasti bermanfaat untuk anda.
             </p>
           </div>
-          <div>Lihat Semua</div>
+          <div style={{color:"#0A5EA8", fontWeight:600, cursor:"pointer"}} onClick={handleKelas}>Lihat Semua</div>
         </div>
+        <SliderPelatihan /> 
       </section>
 
       <section className="sec4">
-        <h4 style={{ textAlign: "center", color: "white", paddingTop: "60px", fontWeight: "bold" }}>
-          Penasaran dengan kampus ASTRAtech?
-        </h4>
-        <p style={{ textAlign: "center", color: "white", fontSize: "14px" }} className="mt-4">
-          ASTRAtech adalah value chain industri untuk penyediaan SDM unggul sekaligus kontribusi sosial mencerdaskan
-          Bangsa. ASTRAtech memiliki banyak program studi yang memenuhi kebutuhan industri untuk melatih peserta didik
-          dalam lingkungan kerja.
-        </p>
-        <div style={{ textAlign: "center" }}>
-          <button
-            style={{
-              border: "none",
-              padding: "15px",
-              borderRadius: "10px",
-              backgroundColor: "white",
-              color: "#0A5EA8",
-              fontWeight: "600",
-            }}
-          >
-            Tentang ASTRAtech
-          </button>
-        </div>
-        <div className="mb-0" style={{ textAlign: "center", marginTop: "104px" }}>
-          <img src={iconAstra} alt="Icon ASTRA" />
-        </div>
-      </section>
+  <div>
+    <h4
+      style={{
+        textAlign: "center",
+        color: "white",
+        paddingTop: "60px",
+        fontWeight: "bold",
+      }}
+    >
+      Penasaran dengan kampus ASTRAtech?
+    </h4>
+    <p
+      style={{
+        textAlign: "center",
+        color: "white",
+        fontSize: "14px",
+        margin: "10px 50px",
+      }}
+      className="mt-4"
+    >
+      ASTRAtech adalah value chain industri untuk penyediaan SDM unggul sekaligus
+      kontribusi sosial mencerdaskan Bangsa. ASTRAtech memiliki banyak program
+      studi yang memenuhi kebutuhan industri untuk melatih peserta didik dalam
+      lingkungan kerja.
+    </p>
+    <div style={{ textAlign: "center" }}>
+      <button
+        style={{
+          border: "none",
+          padding: "15px",
+          borderRadius: "10px",
+          backgroundColor: "white",
+          color: "#0A5EA8",
+          fontWeight: "600",
+        }}
+      >
+        Tentang ASTRAtech
+      </button>
+    </div>
+  </div>
+  <div className="mb-0" style={{ textAlign: "center" }}>
+    <img src={iconAstra} alt="Icon ASTRA" />
+  </div>
+</section>
+
 
       <section className="sec5" style={{height:"350px"}}>
         <div className="d-flex">
@@ -337,8 +490,6 @@ export default function BerandaUtama() {
           <SliderBerita />
         </div>
       </section>
-
-      
     </>
   );
 }
