@@ -111,6 +111,7 @@ function CardClassTraining({
                     className="bg-blue-100 text-white px-3 py-2 rounded-full d-flex align-items-center"
                     aria-label={`Action for ${title}`}
                     style={{border:"none", borderRadius:"10px", padding:"0px 10px", marginLeft:"-60px", marginTop:"-20px", background:"#0E6EFE"}}
+                    onClick={()=> onChangePage("detail", data)}
                   >
                     <i className="fas fa-shopping-cart mr-2"></i>Beli
                   </button>
@@ -131,7 +132,7 @@ function CardClassTraining({
                 <button
                     className="bg-blue-100 text-white px-3 py-2 rounded-full d-flex align-items-center"
                     aria-label={`Action for ${title}`}
-                    onClick={handleLogin}
+                    onClick={()=> onChangePage("detail", data)}
                     style={{border:"none", borderRadius:"10px", padding:"0px 10px", marginLeft:"-100px", marginTop:"-20px", background:"green"}}
                   >
                     <i className="fas fa-add mr-2"></i>Gabung
