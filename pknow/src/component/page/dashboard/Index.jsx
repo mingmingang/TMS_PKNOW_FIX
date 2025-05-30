@@ -179,7 +179,7 @@ export default function Profil({ onChangePage, konfirmasi = "Konfirmasi",
     }
   };
   const today = new Date(); // Hari ini
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(draftProfile.TanggalLahir);
 
   
 function decode(htmlString) {

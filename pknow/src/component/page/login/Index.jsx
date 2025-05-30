@@ -327,10 +327,6 @@ export default function Login() {
         } else if (data[0].Status === "LOGIN FAILED") {
           throw new Error("Nama akun atau kata sandi salah.");
         } else {
-          // setListRole(data);
-          // setShowModal(true);
-          // modalRef.current.open();
-          console.log("data login", data);
           const role = "ROL07"; // Sesuaikan dengan role default atau data dari server
           const nama = name;
           const peran = "Eksternal"; // Contoh peran, sesuaikan sesuai kebutuhan
@@ -593,14 +589,14 @@ export default function Login() {
                 >
                   Masuk
                 </button>
-                <button
-                  className="login-button"
+                <div
+                 
                   id="googleSignUpBtn"
                   type="reset"
+                  style={{marginTop:"10px"}}
                 >
-                  <FcGoogle size={20} style={{ marginRight: "8px" }} /> Daftar
-                  dengan Google
-                </button>
+                  
+                </div>
 
                 <p style={{ textAlign: "center", marginTop: "15px" }}>
                   Belum memiliki akun?{" "}

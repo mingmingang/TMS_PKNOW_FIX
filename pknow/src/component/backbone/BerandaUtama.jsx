@@ -27,7 +27,7 @@ import UseFetch from "../util/UseFetch"; // Pastikan lokasi `UseFetch` sesuai de
 import { API_LINK } from "../util/Constants"; 
 import { useEffect, useRef, useState } from "react";
 import {decode} from 'he';
-
+import AnimatedSection from "../part/AnimatedSection";
 const sliderData = [
   { name: "Adila Ilma", role: "UX Designer", company: "CrescentRating", img: sample },
   { name: "Amadea Dewasanya", role: "Product Designer", company: "CrescentRating", img: sampel2 },
@@ -105,7 +105,7 @@ function SliderPelatihan() {
           }}
         >
           {sliderData
-            .filter(item => item.Publikasi === "Terpublikasi")
+          .filter(item => item.Publikasi === "Terpublikasi")
           .map((item, index) => (
             <SwiperSlide key={item.Key || index}>
               <div style={{ border: "none", height: "80%", padding: "20px 10px" }}>
@@ -124,7 +124,7 @@ function SliderPelatihan() {
                   <div className="card-info">
                     <h4 style={{ fontWeight: "bold", fontSize: "18px", color:"#08549F" }}>{decode(item["Nama Program"])}</h4>
                     <p style={{ color: "#667085", textAlign:"justify" }}> {decode(item.Deskripsi).substring(0, 100)}
-              {item.Deskripsi.length > 100 && "..."}</p>
+                    {item.Deskripsi.length > 100 && "..."}</p>
                     <div style={{ display: "flex", alignItems: "center", margin: "10px 0", justifyContent:"space-between" }}>
                       <div className="">
                       <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
@@ -134,33 +134,33 @@ function SliderPelatihan() {
                       </span>
                  
                     <h5 style={{ color: "#08549F", marginTop:"5px" }}>{item.Harga && item.Harga > 0 ? (
-    <div
-      className=""
-      style={{
-        color: "red",
-        fontWeight: "bold",
-      }}
-    >
-      Rp.{" "}
-      {new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      })
-        .format(item.Harga)
-        .replace("Rp", "")
-        .trim()}
-    </div>
-  ) : (
-    <div
-      className=""
-      style={{
-        color: "green",
-        fontWeight: "bold",
-      }}
-    >
-      Gratis
-    </div>
-  )}</h5>
+                        <div
+                          className=""
+                          style={{
+                            color: "red",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Rp.{" "}
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })
+                            .format(item.Harga)
+                            .replace("Rp", "")
+                            .trim()}
+                        </div>
+                      ) : (
+                        <div
+                          className=""
+                          style={{
+                            color: "green",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Gratis
+                        </div>
+                      )}</h5>
                     </div>
                     <div className="">
                     <button
@@ -359,7 +359,7 @@ export default function BerandaUtama() {
   return (
     <>
       <Header showUserInfo={false} />
-
+      <AnimatedSection>
       <section className="sec1">
         <div className="ucapann">
           <div className="d-flex">
@@ -379,7 +379,9 @@ export default function BerandaUtama() {
           </div>
         </div>
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection delay={0.2}>
       <section className="sec2">
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "30px", fontWeight: "bold" }}>
           Nikmati Semua Layanan P-Know System
@@ -392,7 +394,9 @@ export default function BerandaUtama() {
           <SliderLayanan />
         </div>
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection delay={0.2}>
       <section className="sec3">
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div>
@@ -405,7 +409,9 @@ export default function BerandaUtama() {
         </div>
         <SliderPelatihan /> 
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection delay={0.2}>
       <section className="sec4">
   <div>
     <h4
@@ -451,8 +457,9 @@ export default function BerandaUtama() {
     <img src={iconAstra} alt="Icon ASTRA" />
   </div>
 </section>
+</AnimatedSection>
 
-
+<AnimatedSection delay={0.4}>
       <section className="sec5" style={{height:"350px"}}>
         <div className="d-flex">
           <div className="perusahaan" style={{ marginTop: "60px", marginLeft: "40px" }}>
@@ -484,7 +491,9 @@ export default function BerandaUtama() {
           </div>
         </div>
       </section>
+      </AnimatedSection>
 
+  <AnimatedSection delay={0.4}>
       <section className="sec6">
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "60px", fontWeight: "bold" }}>
           Apa Tanggapan P-Knowers Tentang P-KNOW System?
@@ -499,7 +508,9 @@ export default function BerandaUtama() {
           ))}
         </div>
       </section>
+      </AnimatedSection>
 
+    <AnimatedSection>
       <section style={{ backgroundColor: "white" }}>
         <div>
           <h4 style={{ textAlign: "center", color: "#0A5EA8", paddingTop: "60px", fontWeight: "bold" }}>
@@ -508,7 +519,9 @@ export default function BerandaUtama() {
         </div>
         <Slider />
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection>
       <section className="sec2" style={{height:"600px"}}>
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "30px", fontWeight: "bold" }}>
           Hot News Activity P-KNOW
@@ -520,6 +533,7 @@ export default function BerandaUtama() {
           <SliderBerita />
         </div>
       </section>
+      </AnimatedSection>
 
       <Footer />
     </>

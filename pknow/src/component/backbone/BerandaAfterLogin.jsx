@@ -104,7 +104,9 @@ function SliderPelatihan() {
             1024: { slidesPerView: 3, spaceBetween: 30 },
           }}
         >
-          {sliderData.map((item, index) => (
+          {sliderData
+          .filter(item => item.Publikasi === "Terpublikasi")
+          .map((item, index) => (
             <SwiperSlide key={item.Key || index}>
               <div style={{ border: "none", height: "80%", padding: "20px 10px" }}>
                 <div style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", padding: "20px", borderRadius: "20px" }}>
@@ -120,9 +122,9 @@ function SliderPelatihan() {
                     }}
                   />
                   <div className="card-info">
-                    <h4 style={{ fontWeight: "bold", fontSize: "18px" }}>{decode(item["Nama Program"])}</h4>
-                    <p style={{ color: "#667085" }}> {decode(item.Deskripsi).substring(0, 100)}
-              {item.Deskripsi.length > 100 && "..."}</p>
+                    <h4 style={{ fontWeight: "bold", fontSize: "18px", color:"#08549F" }}>{decode(item["Nama Program"])}</h4>
+                    <p style={{ color: "#667085", textAlign:"justify" }}> {decode(item.Deskripsi).substring(0, 100)}
+                    {item.Deskripsi.length > 100 && "..."}</p>
                     <div style={{ display: "flex", alignItems: "center", margin: "10px 0", justifyContent:"space-between" }}>
                       <div className="">
                       <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
@@ -131,7 +133,34 @@ function SliderPelatihan() {
                       (16,325)
                       </span>
                  
-                    <h5 style={{ color: "#08549F" }}>{"Rp. 50.000"}</h5>
+                    <h5 style={{ color: "#08549F", marginTop:"5px" }}>{item.Harga && item.Harga > 0 ? (
+                        <div
+                          className=""
+                          style={{
+                            color: "red",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Rp.{" "}
+                          {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })
+                            .format(item.Harga)
+                            .replace("Rp", "")
+                            .trim()}
+                        </div>
+                      ) : (
+                        <div
+                          className=""
+                          style={{
+                            color: "green",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Gratis
+                        </div>
+                      )}</h5>
                     </div>
                     <div className="">
                     <button

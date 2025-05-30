@@ -8,10 +8,11 @@ import { decode } from "he";
 import BackPage from "../../../../assets/backPage.png";
 import Konfirmasi from "../../../part/Konfirmasi";
 import { jsPDF } from 'jspdf';
-import logo from "../../../../assets/loginMaskotTMS.png";
+import logo from "../../../../assets/logoAstratech.png";
+import logoPknow from "../../../../assets/pknow.png";
+import "../../../../index.css";
 
 export default function DetailKelas({ withID, onChangePage }) {
-  console.log("dataaa programm", withID)
   let activeUser = "";
   const cookie = Cookies.get("activeUser");
   if (cookie) activeUser = JSON.parse(decryptId(cookie)).username;
@@ -168,38 +169,83 @@ export default function DetailKelas({ withID, onChangePage }) {
     const doc = new jsPDF('landscape');
     
     // Set up the certificate layout
-    doc.setFont('poppins', 'normal');
-    doc.setFontSize(28);
-    doc.text('Certificate of Completion', 105, 40, null, null, 'center');
-
-    // Course Info
-    doc.setFontSize(14);
-    doc.text('MySkill E-Learning Course', 105, 55, null, null, 'center');
-    doc.text(`Topic: ${course}`, 105, 70, null, null, 'center');
-    doc.setFontSize(22);
-    doc.text('MICROSOFT EXCEL INTRODUCTION', 105, 90, null, null, 'center');
-
-    // Recipient Info
-    doc.setFontSize(18);
-    doc.text(`This certificate is awarded to:`, 105, 120, null, null, 'center');
-    doc.setFontSize(24);
-    doc.text(name, 105, 140, null, null, 'center');
+    doc.setFont('helvetica', 'bold');
+    // Adding the logo
+    doc.addImage(logo, 'PNG', 20, 15, 50, 12); // Adjust the logo size and position
+    doc.addImage(logoPknow, 'PNG', 215, 15, 65, 10); // Adjust the logo size and position
     
-    // Date Info
+      // Add a blue rectangle (top header area)
+  doc.setFillColor(10, 94, 168); // Set blue color (RGB for #0A5EA8)
+  doc.rect(0, 0, 297, 7, 'F'); 
+  doc.setFillColor(10, 94, 168); // Set blue color (RGB for #0A5EA8)
+  doc.rect(0, 0, 7, 297, 'F'); 
+  doc.setFillColor(10, 94, 168); // Set blue color (RGB for #0A5EA8)
+  doc.rect(0, 203, 297, 7, 'F'); 
+  doc.setFillColor(10, 94, 168); // Set blue color (RGB for #0A5EA8)
+  doc.rect(290, 0, 7, 297, 'F'); 
+    // Title "Certificate of Completion"
+    doc.setFontSize(24);
+    doc.setTextColor(10, 94, 168); // Black color for text
+    doc.text('Certificate of Completion', 150, 50, null, null, 'center');
+    
+    doc.setFont('helvetica', 'bold');
+    // Text for awardee information
+    doc.setFontSize(16);
+    doc.text('This certificate is proudly presented to', 150, 70, null, null, 'center');
+    doc.setFontSize(28);
+    doc.text(name, 150, 90, null, null, 'center'); // Replace 'name' with recipient's name
+  
+    // Text for course information
+    doc.setFontSize(16);
+    doc.text('for successfully completing', 150, 120, null, null, 'center');
+    doc.setFontSize(22);
+    doc.text(course, 150, 140, null, null, 'center'); // Replace 'course' with course name
+  
+    // Date Information
     doc.setFontSize(12);
-    doc.text(`Date: ${date}`, 105, 170, null, null, 'center');
-
-    // Signature
+    doc.text(`Date: ${date}`, 150, 155, null, null, 'center'); // Replace 'date' with the date
+  
+    // Signature Line
     doc.setFontSize(12);
-    doc.text('______________________________', 50, 210); // Signature Line
-    doc.text('Angga Fauzan', 50, 220);
-    doc.text('CEO MySkill', 50, 230);
-
-    // Add Logo (example: replace with actual logo or image)
-    doc.addImage(logo, 'PNG', 15, 15, 30, 30); // Adjust the position and size as needed
-
-    // Save as PDF
+    doc.text('Budi Hartono', 80, 182);
+    doc.text('______________________________', 60, 185); // Signature Line
+  // Replace with the actual signatory name
+    doc.text('CPO of P-KNOW', 78, 192); // Replace with title
+    
+    // Link to certificate (as shown in the image)
+    doc.setFontSize(10);
+    doc.text('This document can be retrieved at:', 150, 230, null, null, 'center');
+    doc.text('https://skilvul.com/paths/web-development-pemula/student/ckmlmuyegmb000724b5e9tj4s', 150, 240, null, null, 'center');
+    
+    // Save the certificate as PDF
     doc.save('Sertifikat_Penghargaan.pdf');
+  };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => {
+    console.log("bukaa")
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setShowSkalaModal(false);
+  };
+
+  const [showSkalaModal, setShowSkalaModal] = useState(false); // Modal Skala disembunyikan pada awalnya
+  const [selectedValue, setSelectedValue] = useState(null); // Untuk menyimpan nilai skala
+
+  const handleNextToSkala = () => {
+    // Menyembunyikan modal pendidikan dan menampilkan modal skala
+    setShowModal(false);
+    setShowSkalaModal(true);
+  };
+
+  const handleNextToFinish = () => {
+    // Proses atau simpan data sesuai yang diinginkan
+    console.log("Pendidikan Data Disimpan");
+    console.log("Skala Pemahaman:", selectedValue);
   };
 
 
@@ -236,7 +282,7 @@ export default function DetailKelas({ withID, onChangePage }) {
       backgroundRepeat: "no-repeat",
     }}
   >
-    <h4 style={{ color: "white", padding: "30px", paddingBottom: "0px" }}>
+    <h4 style={{ color: "white", padding: "10px", paddingBottom: "0px" }}>
           <button
             style={{ backgroundColor: "transparent", border: "none" }}
             onClick={handleGoBack}
@@ -262,8 +308,10 @@ export default function DetailKelas({ withID, onChangePage }) {
           {withID.desc.length > 300 && "..."}
         </p>
 
-        <p style={{ paddingLeft: "30px", color: "white", fontWeight:"bold", fontSize:"35px" }}>
+       
         {withID.harga && withID.harga > 0 ? (
+    <div className="d-flex">
+       
     <div
       className=""
       style={{
@@ -271,6 +319,7 @@ export default function DetailKelas({ withID, onChangePage }) {
         fontWeight: "bold",
       }}
     >
+       <p style={{ paddingLeft: "30px", color: "white", fontWeight:"bold", fontSize:"35px" }}>
       Rp.{" "}
       {new Intl.NumberFormat("id-ID", {
         style: "currency",
@@ -279,6 +328,26 @@ export default function DetailKelas({ withID, onChangePage }) {
         .format(withID.harga)
         .replace("Rp", "")
         .trim()}
+        </p>
+        
+    </div>
+    <div>
+      {/* Tombol Gabung */}
+      <button
+        className="bg-blue-100 text-white px-3 py-2 rounded-full"
+        style={{
+          border: "none",
+          borderRadius: "10px",
+          padding: "0px 10px",
+          marginLeft: "20px",
+          marginTop: "5px",
+          background: "green",
+        }}
+        onClick={openModal} // Pastikan ini memanggil openModal
+      >
+        <i className="fas fa-add mr-2"></i>Gabung
+      </button>
+    </div>
     </div>
   ) : (
     <div
@@ -288,12 +357,7 @@ export default function DetailKelas({ withID, onChangePage }) {
         fontWeight: "bold",
       }}
     >
-      Gratis
-    </div>
-  )}
-        </p>
-
-        <button
+      Gratis  <button
                     className="bg-blue-100 text-white px-3 py-2 rounded-full d-flex align-items-center"
                     // aria-label={`Action for ${title}`}
                     // onClick={()=> onChangePage("detail", data)}
@@ -301,10 +365,9 @@ export default function DetailKelas({ withID, onChangePage }) {
                   >
                     <i className="fas fa-add mr-2"></i>Gabung
                   </button>
-
+            </div>
+          )}
         </div>
-
-
 </>
       </div>
       <div className="" style={{ margin: "40px 100px" }}>
@@ -322,7 +385,6 @@ export default function DetailKelas({ withID, onChangePage }) {
 
       <div className="" style={{ margin: "40px 100px" }}>
         <h3 className="mb-4"style={{ fontWeight: "500", color: "#0A5EA8" }}>Materi Kelas</h3>
-
 {console.log("kategori", listKategoriProgram.length)}
 {listKategoriProgram.length > 0 ? (
   listKategoriProgram.map((kategori, index) => (
@@ -368,62 +430,62 @@ export default function DetailKelas({ withID, onChangePage }) {
           
           {console.log("data materii", listMateri)}
           {listMateri.length > 0 ? (
-  listMateri
-    .filter((materi) => materi.Status === "Aktif") // Filter materi yang Statusnya 'Aktif'
-    .map((materi, materiIndex) => (
-      <div
-        className="d-flex"
-        key={materiIndex}
-        style={{
-          background: "#f9f9f9",
-          marginBottom: "8px",
-          padding: "8px",
-          borderRadius: "5px",
-        }}
-      >
-        <div className="">
-          <img
-            className="cover-daftar-kk"
-            style={{ borderRadius: "20px" }}
-            height="150"
-            src={`${API_LINK}Upload/GetFile/${materi.Gambar}`}
-            width="300"
-          />
-        </div>
-        <div className="ml-3 d-flex">
-          <div className="">
-          <p
-            style={{
-              fontSize: "24px",
-              fontWeight: "600",
-              color: "#0A5EA8",
-              margin: "0",
-            }}
-          >
-            {materi.Judul || "Judul tidak tersedia"}
-          </p>
-          <p
-            style={{
-              fontSize: "15px",
-              color: "#555",
-              width: "80%",
-              textAlign: "justify",
-            }}
-          >
-            {materi.Keterangan || "Deskripsi tidak tersedia"}
-          </p>
-          </div>
-          <div className="">
-          <button
-                        className="btn btn-outline-primary mt-4 ml-2"
-                        type="button"
-                        // onClick={() => handleBacaMateri(book)}
-                      >
-                        Baca Materi
-                      </button>
-                      </div>
-        </div>
-      </div>
+            listMateri
+              .filter((materi) => materi.Status === "Aktif") // Filter materi yang Statusnya 'Aktif'
+              .map((materi, materiIndex) => (
+              <div
+                className="d-flex"
+                key={materiIndex}
+                style={{
+                  background: "#f9f9f9",
+                  marginBottom: "8px",
+                  padding: "8px",
+                  borderRadius: "5px",
+                }}
+              >
+                <div className="">
+                  <img
+                    className="cover-daftar-kk"
+                    style={{ borderRadius: "20px" }}
+                    height="150"
+                    src={`${API_LINK}Upload/GetFile/${materi.Gambar}`}
+                    width="300"
+                  />
+                </div>
+                <div className="ml-3 d-flex">
+                  <div className="">
+                  <p
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: "600",
+                      color: "#0A5EA8",
+                      margin: "0",
+                    }}
+                  >
+                    {materi.Judul || "Judul tidak tersedia"}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "15px",
+                      color: "#555",
+                      width: "80%",
+                      textAlign: "justify",
+                    }}
+                  >
+                    {materi.Keterangan || "Deskripsi tidak tersedia"}
+                  </p>
+                  </div>
+                  <div className="">
+                  <button
+                                className="btn btn-outline-primary mt-4 ml-2"
+                                type="button"
+                                // onClick={() => handleBacaMateri(book)}
+                              >
+                                Baca Materi
+                              </button>
+                              </div>
+                </div>
+              </div>
     ))
 ) : (
   <Alert
@@ -444,6 +506,190 @@ export default function DetailKelas({ withID, onChangePage }) {
 )}
       </div>
       <>
+        {isError.error && (
+          <div className="flex-fill">
+            <Alert type="danger" message={isError.message} />
+          </div>
+        )}
+      </>
+
+      {showModal && (
+ <div className="modal" style={{
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparan hitam
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 9999, // Pastikan modal berada di atas konten lainnya
+}}>
+  <div className="modal-content" style={{
+    backgroundColor: 'white',
+    padding: '10px',
+    borderRadius: '10px',
+    width: '600px',
+    maxWidth: '100%',
+  }}>
+    <div className="modal-header" style={{ marginBottom: '10px' }}>
+      <h2>Pendidikan</h2>
+      <div  style={{ textAlign: 'right' }}>
+      <button onClick={closeModal} style={{
+        padding: '5px 15px',
+        backgroundColor: '#f44336',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+      }}> <i className="fas fa-times"></i></button>
+    </div>
+    </div>
+    <p style={{padding:"0px 20px"}}>Sebelum memulai kelas, kasih tahu pendidikan & tingkat pemahaman materi kamu.</p>
+    <div className="modal-body">
+      <form>
+        <label>Asal Kota / Kab:</label>
+        <input type="text" name="asalKota" style={{
+          width: '100%',
+          padding: '8px',
+          marginBottom: '10px',
+          borderRadius: '5px',
+        }} />
+        <label>Status saat ini:</label>
+        <select name="status" style={{
+          width: '100%',
+          padding: '8px',
+          marginBottom: '10px',
+          borderRadius: '5px',
+        }}>
+          <option value="mahasiswa">Mahasiswa</option>
+          <option value="pekerja">Pekerja</option>
+        </select>
+        <label>Bidang:</label>
+        <input type="text" name="bidang" value="IT" readOnly style={{
+          width: '100%',
+          padding: '8px',
+          marginBottom: '10px',
+          borderRadius: '5px',
+        }} />
+        <label>Nama Sekolah / Universitas / Perusahaan:</label>
+        <input type="text" name="sekolah" style={{
+          width: '100%',
+          padding: '8px',
+          marginBottom: '10px',
+          borderRadius: '5px',
+        }} />
+        <button type="submit" style={{
+          padding: '10px 20px',
+          backgroundColor: '#0E6EFE',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width:'100%',
+        }} onClick={handleNextToSkala}>Selanjutnya</button>
+      </form>
+    </div>
+    
+  </div>
+</div>
+)}
+
+{showSkalaModal && (
+        <div className="modal" style={{
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparan hitam
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999, // Pastikan modal berada di atas konten lainnya
+        }}>
+          <div className="modal-content" style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '10px',
+            width: '600px',
+            maxWidth: '100%',
+          }}>
+            <div className="modal-header" style={{ marginBottom: '10px' }}>
+              <h2>Tingkat Pemahaman</h2>
+              <div style={{ textAlign: 'right' }}>
+                <button onClick={closeModal} style={{
+                  padding: '5px 15px',
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}>
+                  <i className="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <p style={{ padding: "0px 10px" }}>
+              Sebelum memulai kelas, beri tahu tingkat pemahaman materi kamu.
+            </p>
+            <div className="modal-body" style={{margin:'0px', padding:"10px"}}>
+              {/* Skala 1-10 */}
+              <div style={{ marginBottom: '20px' }}>
+                <label>Seberapa paham kamu terhadap materi ini?</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom:"10px" }}>
+                  <span style={{color:"red", fontWeight:"600"}}>Sangat Tidak Paham</span>
+                  <span style={{color:"green", fontWeight:"600"}}>Sangat Paham</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  {[...Array(10)].map((_, index) => (
+                    <label key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="radio"
+                        name="level"
+                        value={index + 1}
+                        checked={selectedValue === index + 1}
+                        onChange={(e) => setSelectedValue(Number(e.target.value))}
+                        style={{ marginRight: '5px' }}
+                      />
+                      {index + 1}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="d-flex">
+              <button type="button" onClick={handleNextToFinish} style={{
+                padding: '10px 20px',
+                backgroundColor: 'transparent',
+                color: '#0E6EFE',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                width: '100%',
+                fontWeight:'600'
+              }}>
+                Kembali
+              </button>
+              <button type="button" onClick={handleNextToFinish} style={{
+                padding: '10px 20px',
+                backgroundColor: '#0E6EFE',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                width: '100%',
+              }}>
+                Selesai
+              </button>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      )}
+
+<>
       <div style={{ padding: '20px' }}>
       <h1>Sertifikat Penghargaan Generator</h1>
       <div style={{ marginBottom: '10px' }}>
@@ -497,13 +743,6 @@ export default function DetailKelas({ withID, onChangePage }) {
     </div>
       </>
 
-      <>
-        {isError.error && (
-          <div className="flex-fill">
-            <Alert type="danger" message={isError.message} />
-          </div>
-        )}
-      </>
       {showConfirmation && (
         <Konfirmasi
           title={isBackAction ? "Konfirmasi Kembali" : "Konfirmasi Simpan"}
