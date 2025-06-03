@@ -3,10 +3,8 @@ import Footer from "../../backbone/Footer";
 import "../../../style/Login.css";
 import logoPknow from "../../../assets/pknow.png";
 import { useState, useRef, useEffect } from "react";
-import Role from "../../part/Role";
 import Cookies from "js-cookie";
 import maskot from "../../../assets/loginMaskotTMS.png";
-import { FcGoogle } from "react-icons/fc";
 import CryptoJS from "crypto-js";
 import Swal from "sweetalert2";
 import {

@@ -74,27 +74,27 @@ export default function Header({
   };
 
   const handleNotification = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.replace("/notifications"); // Redirect to login page
   };
 
   const handleDashboard = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.replace("/dashboard/profil"); // Redirect to login page
   };
 
   const handleKelas = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.replace("/dashboard/kelas_saya"); // Redirect to login page
   };
 
   const handleSertifikat = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.replace("/dashboard/sertifikat"); // Redirect to login page
   };
 
   const handlePembelian = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.replace("/dashboard/pembelian"); // Redirect to login page
   };
 
@@ -103,12 +103,12 @@ export default function Header({
   };
 
   const handleDaftar = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.href = ROOT_LINK + "/" + "daftar"; // Redirect to login page
   };
 
   const handleLogin = () => {
-    localStorage.removeItem("activeMenu");
+    //localStorage.removeItem("activeMenu");
     window.location.href = ROOT_LINK + "/" + "login"; // Redirect to login page
   };
 
@@ -167,9 +167,9 @@ export default function Header({
               <ul className="menu-center">
                 <li>
                   <a
-                    className={`menu-item ${
-                      activeMenu === "beranda" ? "active" : ""
-                    }`}
+                    // className={`menu-item ${
+                    //   activeMenu === "beranda" ? "active" : ""
+                    // }`}
                     onClick={() => handleMenuClick("beranda", "beranda")}
                     style={{
                       color: "#095DA8",
@@ -182,9 +182,9 @@ export default function Header({
                 </li>
                 <li>
                   <a
-                    className={`menu-item ${
-                      activeMenu === "landing_training" ? "active" : ""
-                    }`}
+                    // className={`menu-item ${
+                    //   activeMenu === "landing_training" ? "active" : ""
+                    // }`}
                     onClick={() => handleMenuClick("landing_training", "landing_training")}
                     style={{
                       color: "#095DA8",
@@ -197,9 +197,9 @@ export default function Header({
                 </li>
                 <li>
                   <a
-                    className={`menu-item ${
-                      activeMenu === "tentang_pknow" ? "active" : ""
-                    }`}
+                    // className={`menu-item ${
+                    //   activeMenu === "tentang_pknow" ? "active" : ""
+                    // }`}
                     onClick={() =>
                       handleMenuClick("tentang_pknow", "tentang_pknow")
                     }
@@ -225,14 +225,10 @@ export default function Header({
                   if (menu.isHidden) return null;
                   const isActive =
                     localStorage.getItem("activeMenu") === menu.head;
-                  console.log(
-                    "Active menu:",
-                    localStorage.getItem("activeMenu")
-                  );
                   return (
                     <li
                       key={menu.headkey}
-                      className={isActive ? "active" : ""} // Tambahkan kelas "active"
+                      // className={isActive ? "active" : ""} // Tambahkan kelas "active"
                     >
                       <a
                         href={menu.link}
@@ -243,7 +239,7 @@ export default function Header({
                           window.location.replace(menu.link);
                           // Redirect ke link
                         }}
-                        className={`menu-item ${isActive ? "active" : ""}`}
+                        // className={`menu-item ${isActive ? "active" : ""}`}
                       >
                         <div className="menu-item-content">
                           {/* Render ikon jika ada */}

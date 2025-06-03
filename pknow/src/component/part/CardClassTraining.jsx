@@ -56,7 +56,7 @@ function CardClassTraining({
         cardContent = (
           <div className="d-flex justify-content-between mt-2">
                     <div className="d-flex mt-2">
-                     <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p>
+                     {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
                     </div>
                 
             <div className="d-flex" style={{ width: "10%", marginTop:"15px" }}>
@@ -78,7 +78,7 @@ function CardClassTraining({
         cardContent = (
           <div className="d-flex justify-content-between mt-2">
                     <div className="d-flex mt-2">
-                     <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p>
+                     {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
                     </div>
                 
             <div className="d-flex" style={{ width: "10%", marginTop:"15px" }}>
@@ -102,7 +102,7 @@ function CardClassTraining({
         cardContent = (
           <div className="d-flex justify-content-between mt-2">
                     <div className="d-flex mt-2">
-                     <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p>
+                     {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
                     </div>
                 
             <div className="d-flex" style={{ width: "10%", marginTop:"15px" }}>
@@ -124,7 +124,7 @@ function CardClassTraining({
         cardContent = (
           <div className="d-flex justify-content-between mt-2">
                     <div className="d-flex mt-2">
-                     <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p>
+                     {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
                     </div>
                 
             <div className="d-flex" style={{ width: "10%", marginTop:"15px" }}>

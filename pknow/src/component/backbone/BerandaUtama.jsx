@@ -24,10 +24,12 @@ import sampel4 from "../../assets/girl3.png";
 import sampel5 from "../../assets/girl4.png";
 import berita1 from "../../assets/berita1.png";
 import UseFetch from "../util/UseFetch"; // Pastikan lokasi `UseFetch` sesuai dengan folder Anda
-import { API_LINK } from "../util/Constants"; 
+import { API_LINK, ROOT_LINK } from "../util/Constants"; 
 import { useEffect, useRef, useState } from "react";
 import {decode} from 'he';
 import AnimatedSection from "../part/AnimatedSection";
+
+
 const sliderData = [
   { name: "Adila Ilma", role: "UX Designer", company: "CrescentRating", img: sample },
   { name: "Amadea Dewasanya", role: "Product Designer", company: "CrescentRating", img: sampel2 },
@@ -35,6 +37,7 @@ const sliderData = [
   { name: "Dialus Andari", role: "UI/UX Designer", company: "Universal Eco Pasific", img: sampel4 },
   { name: "Hutami Septiana Raswaty", role: "Digital Product Manager", company: "Telkom Indonesia", img: sampel5 },
 ];
+
 
 
 const sliderBerita = [
@@ -77,6 +80,10 @@ function SliderPelatihan() {
   useEffect(() => {
     getListKKAktif();
   }, [currentFilterAktif]);
+
+    const handleLogin = () => {
+      window.location.href = ROOT_LINK + "/" + "login"; // Redirect to login page
+    };
 
   return (
     <div className="slider-container" style={{ background: "transparent", height: "250px" }}>
@@ -127,12 +134,12 @@ function SliderPelatihan() {
                     {item.Deskripsi.length > 100 && "..."}</p>
                     <div style={{ display: "flex", alignItems: "center", margin: "10px 0", justifyContent:"space-between" }}>
                       <div className="">
-                      <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
-                      <span style={{ color: "#f5a623", marginRight: "5px" }}>⭐⭐⭐⭐</span>
-                      <span style={{ fontSize: "12px", color: "#667085", marginLeft: "5px" }}>
+                      {/* <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
+                      <span style={{ color: "#f5a623", marginRight: "5px" }}>⭐⭐⭐⭐</span> */}
+                      {/* <span style={{ fontSize: "12px", color: "#667085", marginLeft: "5px" }}>
                       (16,325)
                       </span>
-                 
+                  */}
                     <h5 style={{ color: "#08549F", marginTop:"5px" }}>{item.Harga && item.Harga > 0 ? (
                         <div
                           className=""
@@ -163,19 +170,30 @@ function SliderPelatihan() {
                       )}</h5>
                     </div>
                     <div className="">
-                    <button
-                      style={{
-                        backgroundColor: "#0E6EFE",
-                        color: "white",
-                        padding: "8px 15px",
-                        borderRadius: "10px",
-                        border: "none",
-                        marginTop: "10px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      + Gabung
-                    </button>
+                   <button
+  style={{
+    backgroundColor: item.Harga && item.Harga > 0 ? "#0E6EFE" : "green",
+    color: "white",
+    padding: "8px 15px",
+    borderRadius: "10px",
+    border: "none",
+    marginTop: "10px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  }}
+  onClick={handleLogin}
+>
+  {item.Harga && item.Harga > 0 ? (
+    <>
+      <i className="fas fa-shopping-cart"></i> Beli
+    </>
+  ) : (
+    "+ Gabung"
+  )}
+</button>
+
                     </div>
                     </div>
                   </div>
@@ -356,6 +374,7 @@ function CommentCard({ name, role, text, img }) {
 }
 
 export default function BerandaUtama() {
+  
   return (
     <>
       <Header showUserInfo={false} />

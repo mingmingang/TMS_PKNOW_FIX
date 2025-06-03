@@ -22,7 +22,7 @@ export default function PDF_Viewer({ pdfFileName, width = "1080px", height="1050
   }, [pdfFileName]);
 
   return (
-    <div className="d-flex flex-column" style={{margin:'auto 30px', marginBottom:'50px', borderRadius:'80px'}}>
+    <div className="d-flex flex-column">
       <div className="flex-fill">
         {isLoading && <Loading />} {/* Show loading state if needed */}
       </div>

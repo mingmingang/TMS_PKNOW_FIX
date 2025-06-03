@@ -150,6 +150,62 @@ export default function KelasKu({onChangePage,  konfirmasi = "Konfirmasi",
   const [classes, setClasses] = useState([]);
   const [activeTab, setActiveTab] = useState("Semua Kelas");
 
+  const transactions = [
+    {
+      id: 1,
+      date: "29 Januari 2025, 21.59",
+      invoice: "ORD-cm8i189xz0f7401o73xncywpj",
+      product: "Frame: Membuat Website Portofolio",
+      price: "GRATIS",
+      total: "GRATIS",
+      status: "Berhasil",
+    },
+    {
+      id: 2,
+      date: "5 Oktober 2024, 10.30",
+      invoice: "ORD-ab12cd34ef5678",
+      product: "Advanced JavaScript",
+      price: "Rp 150.000",
+      total: "Rp 150.000",
+      status: "Menunggu Pembayaran",
+    },
+    {
+      id: 3,
+      date: "3 Oktober 2024, 09.15",
+      invoice: "ORD-xy98zw76vu5432",
+      product: "Data Science Fundamentals",
+      price: "Rp 200.000",
+      total: "Rp 200.000",
+      status: "Dibatalkan",
+    },
+  ];
+
+  const [activeStatus, setActiveStatus] = useState("Semua Transaksi");
+  const filteredTransactions = transactions.filter((trans) => {
+    if (activeStatus === "Semua Transaksi") return true;
+    if (activeStatus === "Transaksi Berhasil")
+      return trans.status === "Berhasil";
+    if (activeStatus === "Menunggu Pembayaran")
+      return trans.status === "Menunggu Pembayaran";
+    if (activeStatus === "Transaksi Dibatalkan")
+      return trans.status === "Dibatalkan";
+    return true;
+  });
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Berhasil":
+        return "#4CAF50";
+      case "Menunggu Pembayaran":
+        return "#FFC107";
+      case "Dibatalkan":
+        return "#F44336";
+      default:
+        return "#9E9E9E";
+    }
+  };
+
+  
 //   useEffect(() => {
 //     const fetchClasses = async () => {
 //       try {
@@ -380,91 +436,138 @@ useEffect(() => {
 
 
       <div style={{ flex: 1, padding: "30px" }}>
-        <h1 style={{ fontSize: "24px", color: "#0A5EA8", marginBottom: "20px" }}>Pembelian Saya</h1>
+        <h1
+          style={{ fontSize: "24px", color: "#0A5EA8", marginBottom: "20px" }}
+        >
+          Pembelian Saya
+        </h1>
 
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        {/* Transaction Status Tabs */}
+        <div
+          style={{
+            display: "flex",
+            marginBottom: "20px",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
           {[
-            "Semua Kelas",
-            "Belum Dimulai",
-            "Sedang Dipelajari",
-            "Selesai",
-          ].map((tab) => (
+            "Semua Transaksi",
+            "Transaksi Berhasil",
+            "Menunggu Pembayaran",
+            "Transaksi Dibatalkan",
+          ].map((status) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={status}
+              onClick={() => setActiveStatus(status)}
               style={{
-                padding: "10px 20px",
-                borderRadius: "5px",
-                backgroundColor: activeTab === tab ? "#0A5EA8" : "#E9ECEF",
-                color: activeTab === tab ? "#fff" : "#333",
-                border: "none",
+                padding: "8px 16px",
+                borderRadius: "20px",
+                backgroundColor:
+                  activeStatus === status ? "#0A5EA8" : "transparent",
+                color: activeStatus === status ? "#fff" : "#0A5EA8",
+                border: `1px solid ${
+                  activeStatus === status ? "#0A5EA8" : "#0A5EA8"
+                }`,
                 cursor: "pointer",
+                transition: "all 0.3s",
+                ":hover": {
+                  backgroundColor:
+                    activeStatus === status ? "#0A5EA8" : "#F5F9FF",
+                },
               }}
             >
-              {tab}
+              {status}
             </button>
           ))}
         </div>
 
-        {/* Class Cards */}
-        <div style={{ display: "grid", gap: "20px" }}>
-          {filteredClasses.map((cls) => (
+        {/* Transaction Cards */}
+        <div style={{ display: "grid", gap: "15px" }}>
+          {filteredTransactions.map((trans) => (
             <div
-              key={cls.id}
+              key={trans.id}
               style={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#fff",
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
                 padding: "20px",
-                borderRadius: "5px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                backgroundColor: "#fff",
               }}
             >
-              <img
-                src={cls.image}
-                alt={cls.title}
-                style={{ width: "80px", height: "80px", borderRadius: "5px" }}
-              />
-              <div style={{ flex: 1, marginLeft: "20px" }}>
-                <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>{cls.title}</h3>
-                <p style={{ margin: "5px 0", fontSize: "14px", color: "#888" }}>
-                  {cls.description}
-                </p>
-                <div
-                  style={{
-                    height: "5px",
-                    backgroundColor: "#E9ECEF",
-                    borderRadius: "5px",
-                    overflow: "hidden",
-                    marginRight:"40px"
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${cls.progress}%`,
-                      height: "100%",
-                      backgroundColor: "#0A5EA8",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <button
+              <div
                 style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#DB4437",
-                  color: "#fff",
-                  borderRadius: "5px",
-                  border: "none",
-                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
                 }}
               >
-                Lihat Detail Kelas
-              </button>
+                <p style={{ margin: 0, fontWeight: "bold" }}>{trans.date}</p>
+                <span
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "12px",
+                    backgroundColor: getStatusColor(trans.status),
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {trans.status}
+                </span>
+              </div>
+
+              <p style={{ margin: "0 0 10px 0", color: "#666" }}>
+                No Invoice: {trans.invoice}
+              </p>
+
+              <div
+                style={{
+                  borderBottom: "1px solid #eee",
+                  paddingBottom: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>{trans.product}</span>
+                  <span>{trans.price}</span>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontWeight: "bold",
+                }}
+              >
+                <span>Total Pembayaran</span>
+                <span>{trans.total}</span>
+              </div>
+
+              {trans.status === "Menunggu Pembayaran" && (
+                <button
+                  style={{
+                    width: "100%",
+                    marginTop: "15px",
+                    padding: "10px",
+                    backgroundColor: "#0A5EA8",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Lanjutkan Pembayaran
+                </button>
+              )}
             </div>
           ))}
         </div>
       </div>
+      
       {showConfirmation && (
         <Konfirmasi
           title={konfirmasi} // Pass the title

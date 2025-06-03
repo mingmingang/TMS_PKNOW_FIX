@@ -6,8 +6,6 @@ import logo from "../../assets/logo.png";
 import perusahaan from "../../assets/perusahaan.png";
 import iconAstra from "../../assets/iconAstra.png";
 import sample from "../../assets/sampel55.png";
-import Footer from "./Footer";
-import Header from "./Header";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -24,9 +22,10 @@ import sampel4 from "../../assets/girl3.png";
 import sampel5 from "../../assets/girl4.png";
 import berita1 from "../../assets/berita1.png";
 import UseFetch from "../util/UseFetch"; // Pastikan lokasi `UseFetch` sesuai dengan folder Anda
-import { API_LINK } from "../util/Constants"; 
+import { API_LINK, ROOT_LINK } from "../util/Constants"; 
 import { useEffect, useRef, useState } from "react";
 import {decode} from 'he';
+import AnimatedSection from "../part/AnimatedSection";
 
 const sliderData = [
   { name: "Adila Ilma", role: "UX Designer", company: "CrescentRating", img: sample },
@@ -36,7 +35,6 @@ const sliderData = [
   { name: "Hutami Septiana Raswaty", role: "Digital Product Manager", company: "Telkom Indonesia", img: sampel5 },
 ];
 
-
 const sliderBerita = [
   { name: "Program Talenta Digital 2022 Jangkau 200 Ribu", role: "Program Talenta Digital 2022 Jangkau 200 Ribu Milenial", company: "Detik.Com", img: berita1 },
   { name: "Infografis Terima Kasih Coach Shin Tae-yong", role: "Infografis Terima Kasih Coach Shin Tae-yong", company: "News.com", img: sampel2 },
@@ -44,7 +42,6 @@ const sliderBerita = [
   { name: "Dialus Andari", role: "UI/UX Designer", company: "Liputan6.com", img: sampel4 },
   { name: "Hutami Septiana Raswaty", role: "Digital Product Manager", company: "Daily Social", img: sampel5 },
 ];
-
 
 function SliderPelatihan() {
   const [isError, setIsError] = useState(false);
@@ -73,6 +70,10 @@ function SliderPelatihan() {
       setIsLoading(false);
     }
   };
+      const handleLogin = () => {
+        window.location.href = ROOT_LINK + "/" + "class_training"; // Redirect to login page
+      };
+  
 
   useEffect(() => {
     getListKKAktif();
@@ -127,11 +128,11 @@ function SliderPelatihan() {
                     {item.Deskripsi.length > 100 && "..."}</p>
                     <div style={{ display: "flex", alignItems: "center", margin: "10px 0", justifyContent:"space-between" }}>
                       <div className="">
-                      <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
+                      {/* <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>4.3</span>
                       <span style={{ color: "#f5a623", marginRight: "5px" }}>⭐⭐⭐⭐</span>
                       <span style={{ fontSize: "12px", color: "#667085", marginLeft: "5px" }}>
                       (16,325)
-                      </span>
+                      </span> */}
                  
                     <h5 style={{ color: "#08549F", marginTop:"5px" }}>{item.Harga && item.Harga > 0 ? (
                         <div
@@ -164,18 +165,28 @@ function SliderPelatihan() {
                     </div>
                     <div className="">
                     <button
-                      style={{
-                        backgroundColor: "#0E6EFE",
-                        color: "white",
-                        padding: "8px 15px",
-                        borderRadius: "10px",
-                        border: "none",
-                        marginTop: "10px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      + Gabung
-                    </button>
+  style={{
+    backgroundColor: item.Harga && item.Harga > 0 ? "#0E6EFE" : "green",
+    color: "white",
+    padding: "8px 15px",
+    borderRadius: "10px",
+    border: "none",
+    marginTop: "10px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  }}
+  onClick={handleLogin}
+>
+  {item.Harga && item.Harga > 0 ? (
+    <>
+      <i className="fas fa-shopping-cart"></i> Beli
+    </>
+  ) : (
+    "+ Gabung"
+  )}
+</button>
                     </div>
                     </div>
                   </div>
@@ -264,7 +275,7 @@ function Slider() {
 }
 
 const handleKelas = () => {
-  window.location.replace("/kelas"); // Redirect to login page
+  window.location.replace("/class_training"); // Redirect to login page
 };
 
 
@@ -358,7 +369,7 @@ function CommentCard({ name, role, text, img }) {
 export default function BerandaUtama() {
   return (
     <>
-
+    <AnimatedSection>
       <section className="sec1">
         <div className="ucapann">
           <div className="d-flex">
@@ -378,7 +389,9 @@ export default function BerandaUtama() {
           </div>
         </div>
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection>
       <section className="sec2">
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "30px", fontWeight: "bold" }}>
           Nikmati Semua Layanan P-Know System
@@ -391,7 +404,9 @@ export default function BerandaUtama() {
           <SliderLayanan />
         </div>
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection>
       <section className="sec3">
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div>
@@ -404,7 +419,9 @@ export default function BerandaUtama() {
         </div>
         <SliderPelatihan /> 
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection>
       <section className="sec4">
   <div>
     <h4
@@ -450,8 +467,9 @@ export default function BerandaUtama() {
     <img src={iconAstra} alt="Icon ASTRA" />
   </div>
 </section>
+</AnimatedSection>
 
-
+      <AnimatedSection>
       <section className="sec5" style={{height:"350px"}}>
         <div className="d-flex">
           <div className="perusahaan" style={{ marginTop: "60px", marginLeft: "40px" }}>
@@ -483,7 +501,9 @@ export default function BerandaUtama() {
           </div>
         </div>
       </section>
+      </AnimatedSection>
 
+      <AnimatedSection>
       <section className="sec6">
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "60px", fontWeight: "bold" }}>
           Apa Tanggapan P-Knowers Tentang P-KNOW System?
@@ -498,7 +518,9 @@ export default function BerandaUtama() {
           ))}
         </div>
       </section>
-
+      </AnimatedSection>
+      
+      <AnimatedSection>
       <section style={{ backgroundColor: "white" }}>
         <div>
           <h4 style={{ textAlign: "center", color: "#0A5EA8", paddingTop: "60px", fontWeight: "bold" }}>
@@ -507,7 +529,9 @@ export default function BerandaUtama() {
         </div>
         <Slider />
       </section>
-
+      </AnimatedSection>
+      
+      <AnimatedSection>
       <section className="sec2" style={{height:"600px"}}>
         <h4 style={{ textAlign: "center", color: "white", paddingTop: "30px", fontWeight: "bold" }}>
           Hot News Activity P-KNOW
@@ -519,6 +543,7 @@ export default function BerandaUtama() {
           <SliderBerita />
         </div>
       </section>
+      </AnimatedSection>
     </>
   );
 }

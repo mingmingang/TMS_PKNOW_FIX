@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import { decryptId } from "../../../util/Encryptor";
 import "../../../../style/Search.css";
 import "../../../../../src/index.css";
+import AnimatedSection from "../../../part/AnimatedSection";
 
 const programStudi = [
   { id: 1, name: "Teknik Informatika" },
@@ -91,6 +92,7 @@ export default function KelolaKK({ onChangePage }) {
 
   return (
     <>
+    <AnimatedSection delay={0.2}>
       <div className="app-container">
         <main>
         <div className="backSearch">
@@ -271,6 +273,7 @@ export default function KelolaKK({ onChangePage }) {
           </div>
         </main>
       </div>
+      </AnimatedSection>
     </>
   );
 }

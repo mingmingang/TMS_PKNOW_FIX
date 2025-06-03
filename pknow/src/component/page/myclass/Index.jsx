@@ -1,19 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { PAGE_SIZE, API_LINK } from "../../../util/Constants";
-import SweetAlert from "../../../util/SweetAlert";
-import UseFetch from "../../../util/UseFetch";
-import "../../../../style/Beranda.css";
-import Button2 from "../../../part/Button copy";
-import CardKK from "../../../part/CardClassTraining";
-import Alert from "../../../part/Alert";
-import Paging from "../../../part/Paging";
-import Input from "../../../part/Input";
-import Header from "../../../backbone/Header";
-import Footer from "../../../backbone/Footer";
+import { PAGE_SIZE, API_LINK } from "../../util/Constants";
+import UseFetch from "../../util/UseFetch";
+import "../../../style/Beranda.css";
+import Button2 from "../../part/Button copy";
+import CardKK from "../../part/CardClassTraining";
+import Alert from "../../part/Alert";
+import Paging from "../../part/Paging";
+import Input from "../../part/Input";
+import Header from "../../backbone/Header";
+import Footer from "../../backbone/Footer";
 import Cookies from "js-cookie";
-import { decryptId } from "../../../util/Encryptor";
-import "../../../../style/Search.css";
-import "../../../../../src/index.css";
+import { decryptId } from "../../util/Encryptor";
+import "../../../style/Search.css";
+import "../../../../src/index.css";
+import AnimatedSection from "../../part/AnimatedSection";
+
 
 const programStudi = [
   { id: 1, name: "Teknik Informatika" },
@@ -90,13 +91,13 @@ export default function KelolaKK({ onChangePage }) {
 
   return (
     <>
-      <Header showUserInfo={false} />
+    <AnimatedSection>
       <div className="app-container">
         <main>
         <div className="backSearch">
-          <h1>Mau belajar apa hari ini?</h1>
+          <h1>Kelas Anda</h1>
           <p>
-          Mari bergabung di kelas ternama kami, ilmu yang diberikan pasti bermanfaat untuk anda.
+          Pelajari atau ayo mulai kelas yang telah anda klaim sebelumnya.
           </p>
           <div className="input-wrapper">
             <div
@@ -112,7 +113,7 @@ export default function KelolaKK({ onChangePage }) {
               <Input
                 ref={searchQuery}
                 forInput="pencarianKK"
-                placeholder="Cari Kelas"
+                placeholder="Cari Kelas Saya"
                 style={{
                   border: "none",
                   width: "680px",
@@ -132,7 +133,7 @@ export default function KelolaKK({ onChangePage }) {
         </div>
 
         <div className="navigasi-layout-page">
-          <p className="title-kk">Kelas Training</p>
+          <p className="title-kk">Kelas Saya</p>
         </div>
 
 
@@ -272,7 +273,7 @@ export default function KelolaKK({ onChangePage }) {
           </div>
         </main>
       </div>
-      <Footer />
+      </AnimatedSection>
     </>
   );
 }

@@ -8,11 +8,13 @@ import logoPartner from "../../../../assets/perusahaan.png";
 import "../../../../style/TentangKami.css";
 import Header from "../../../backbone/Header";
 import Footer from "../../../backbone/Footer";
+import AnimatedSection from "../../../part/AnimatedSection";
 
 export default function Index() {
   return (
     <>
       <Header showUserInfo={false} />
+      <AnimatedSection>
       <div className="tentang-kami-container">
         {/* Hero Section */}
         <section className="hero-section " style={{ marginBottom: "100px" }}>
@@ -176,6 +178,7 @@ export default function Index() {
           </div>
         </section>
       </div>
+      </AnimatedSection>
       <Footer />
     </>
   );

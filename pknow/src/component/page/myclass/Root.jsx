@@ -9,8 +9,6 @@ function getPageMode() {
     switch (pageMode) {
       case "index":
         return <MasterKelas onChangePage={handleSetPageMode} />;
-        case "add":
-            return <MasterTambahKelompokKeahlian onChangePage={handleSetPageMode} />;
     }
   }
   

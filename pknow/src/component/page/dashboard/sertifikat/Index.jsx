@@ -66,6 +66,46 @@ export default function Sertifikat({onChangePage,  konfirmasi = "Konfirmasi",
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const certificates = [
+    {
+      title: "Web Development Pemula",
+      id: "wep574epGtKzupX75srOM0",
+      level: "Pemula",
+      date: "15 Mei 2025",
+    },
+    {
+      title: "Algorithm & Data Structures with Python",
+      id: "itiTGimxqRlLy_m8JxdSS4rw",
+      level: "Ahli",
+      date: "10 April 2025",
+    },
+    {
+      title: "Python Lanjutan",
+      id: "b_3n9fK_aO2y0uaiSM-XeQ",
+      level: "Menengah",
+      date: "5 Maret 2025",
+    },
+    {
+      title: "Python Dasar",
+      id: "IGOTIK_ETWqXsMMHQKxfYA",
+      level: "Pemula",
+      date: "20 Februari 2025",
+    },
+  ];
+
+    const getLevelColor = (level) => {
+    switch (level) {
+      case "Pemula":
+        return "#4CAF50"; // Hijau
+      case "Menengah":
+        return "#2196F3"; // Biru
+      case "Ahli":
+        return "#FF9800"; // Oranye
+      default:
+        return "#9E9E9E"; // Abu-abu
+    }
+  };
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -386,87 +426,157 @@ useEffect(() => {
         <h1 style={{ fontSize: "24px", color: "#0A5EA8", marginBottom: "20px" }}>Sertifikat Saya</h1>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-          {[
-            "Semua Kelas",
-            "Belum Dimulai",
-            "Sedang Dipelajari",
-            "Selesai",
-          ].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: "10px 20px",
-                borderRadius: "5px",
-                backgroundColor: activeTab === tab ? "#0A5EA8" : "#E9ECEF",
-                color: activeTab === tab ? "#fff" : "#333",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {/* Class Cards */}
-        <div style={{ display: "grid", gap: "20px" }}>
-          {filteredClasses.map((cls) => (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          {certificates.map((cert, index) => (
             <div
-              key={cls.id}
+              key={index}
               style={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#fff",
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
                 padding: "20px",
-                borderRadius: "5px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                backgroundColor: "#fff",
+                position: "relative",
+                overflow: "hidden",
               }}
             >
-              <img
-                src={cls.image}
-                alt={cls.title}
-                style={{ width: "80px", height: "80px", borderRadius: "5px" }}
-              />
-              <div style={{ flex: 1, marginLeft: "20px" }}>
-                <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>{cls.title}</h3>
-                <p style={{ margin: "5px 0", fontSize: "14px", color: "#888" }}>
-                  {cls.description}
-                </p>
-                <div
-                  style={{
-                    height: "5px",
-                    backgroundColor: "#E9ECEF",
-                    borderRadius: "5px",
-                    overflow: "hidden",
-                    marginRight:"40px"
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${cls.progress}%`,
-                      height: "100%",
-                      backgroundColor: "#0A5EA8",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <button
+              {/* Badge Level */}
+              <div
                 style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#DB4437",
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  padding: "4px 10px",
+                  borderRadius: "12px",
+                  backgroundColor: getLevelColor(cert.level),
                   color: "#fff",
-                  borderRadius: "5px",
-                  border: "none",
-                  cursor: "pointer",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                 }}
               >
-                Lihat Detail Kelas
+                {cert.level}
+              </div>
+
+              <h3
+                style={{
+                  margin: "0 0 15px 0",
+                  fontSize: "18px",
+                  color: "#333",
+                  paddingRight: "60px", // Untuk memberi space untuk badge
+                }}
+              >
+                {cert.title}
+              </h3>
+
+              <div style={{ marginBottom: "15px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <i
+                    className="fas fa-id-card"
+                    style={{
+                      color: "#0A5EA8",
+                      marginRight: "8px",
+                      width: "20px",
+                      textAlign: "center",
+                    }}
+                  ></i>
+                  <span style={{ fontSize: "14px", color: "#666" }}>
+                    {cert.id}
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <i
+                    className="fas fa-calendar-alt"
+                    style={{
+                      color: "#0A5EA8",
+                      marginRight: "8px",
+                      width: "20px",
+                      textAlign: "center",
+                    }}
+                  ></i>
+                  <span style={{ fontSize: "14px", color: "#666" }}>
+                    {cert.date}
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <i
+                    className="fas fa-certificate"
+                    style={{
+                      color: getLevelColor(cert.level),
+                      marginRight: "8px",
+                      width: "20px",
+                      textAlign: "center",
+                    }}
+                  ></i>
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      color: "#666",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Level:{" "}
+                    <span style={{ color: getLevelColor(cert.level) }}>
+                      {cert.level}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <button
+                style={{
+                  width: "100%",
+                  backgroundColor: "#0A5EA8",
+                  color: "#fff",
+                  border: "none",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  transition: "background-color 0.3s",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  ":hover": {
+                    backgroundColor: "#084b8a",
+                  },
+                }}
+              >
+                <i
+                  className="fas fa-download"
+                  style={{ marginRight: "8px" }}
+                ></i>
+                Unduh Sertifikat
               </button>
             </div>
           ))}
         </div>
+    
       </div>
       {showConfirmation && (
         <Konfirmasi
