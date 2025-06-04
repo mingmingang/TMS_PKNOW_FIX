@@ -12,6 +12,7 @@ import MasterTestSharingPDF from "./SharingPDF";
 import MasterTestSharingVideo from "./SharingVideo";
 import { useState, createContext, useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MasterBeliKelas from "./BeliKelas";
 
 export default function MasterPICPKNOW() {
   const [pageMode, setPageMode] = useState("index");
@@ -142,6 +143,14 @@ function getPageMode() {
             isOpen={isOpen}
         />
       );
+
+      case "beli":
+        return (
+          <MasterBeliKelas
+          onChangePage={handleSetPageMode}
+            withID={dataID}
+            />
+        );
     }
   }
   

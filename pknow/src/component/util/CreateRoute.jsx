@@ -3,7 +3,7 @@ const Login = lazy(() => import("../page/login/Index"));
 const Beranda = lazy(() => import("../backbone/BerandaUtama"));
 const BerandaAfterLogin = lazy(() => import("../backbone/BerandaAfterLogin"));
 const Notifikasi = lazy(() => import("../page/notifikasi/Root"));
-const AksesMateri = lazy(() => import("../page/Materi/master-test/Root"));
+// const AksesMateri = lazy(() => import("../page/Materi/master-test/Root"));
 const Daftar = lazy(() => import("../page/daftar/Root"));
 const TentangKamiLogin = lazy(() => import("../page/tentangkami/tentangkamiafterlogin/Root"));
 const TentangPKNOW = lazy(() => import("../page/tentangkami/tentangkamibeforelogin/Root"));
@@ -21,7 +21,7 @@ const routeList = [
   { path: "/login", element: <Login /> },
   { path: "/beranda_utama", element: <Beranda /> },
   { path: "/notifications", element: <Notifikasi /> },
-  { path: "/materi", element: <AksesMateri /> },
+  // { path: "/materi", element: <AksesMateri /> },
   { path: "/daftar", element: <Daftar /> },
   { path: "/dashboard/kelas_saya", element: <KelasKu /> },
   { path: "/tentang_kami", element: <TentangKamiLogin /> },

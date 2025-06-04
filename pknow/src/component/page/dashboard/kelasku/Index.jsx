@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import CryptoJS from "crypto-js";
 import { decode } from 'he';
 import Konfirmasi from "../../../part/Konfirmasi";
-
+import AppContext_test from "../../kelas/kelasafterlogin/TestContext";
 
 export default function KelasKu({onChangePage,  konfirmasi = "Konfirmasi",
     pesanKonfirmasi = "Apakah Anda yakin ingin keluar?",}) {
@@ -19,7 +19,7 @@ export default function KelasKu({onChangePage,  konfirmasi = "Konfirmasi",
     ext_id: "",
     NamaLengkap: "",
     gambar: "",
-    Password: "", // Tambahkan field password dari backend
+    Password: "", 
   });
 
   const [passwords, setPasswords] = useState({
@@ -148,65 +148,102 @@ export default function KelasKu({onChangePage,  konfirmasi = "Konfirmasi",
   const [classes, setClasses] = useState([]);
   const [activeTab, setActiveTab] = useState("Semua Kelas");
 
-//   useEffect(() => {
-//     const fetchClasses = async () => {
-//       try {
-//         const response = await UseFetch(`${API_LINK}Utilities/GetUserClasses`, {
-//           username: activeUser,
-//         });
 
-//         if (response) {
-//           setClasses(response);
-//         }
-//       } catch (error) {
-//         console.error("Error fetching classes:", error);
-//       }
-//     };
-
-//     fetchClasses();
-//   }, [activeUser]);
-
-
-useEffect(() => {
-    // Data statis sementara
-    const staticClasses = [
-      {
-        id: 1,
-        title: "C++ Dasar",
-        description: "Materi dasar pemrograman C++",
-        status: "Belum Dimulai",
-        progress: 0,
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Ffree-png-nwvsu&psig=AOvVaw0y1K9HUxEgtTZj4-t3L4Fa&ust=1738128184912000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOim7JnWl4sDFQAAAAAdAAAAABAP", // Gambar placeholder
-      },
-      {
-        id: 2,
-        title: "React Native",
-        description: "Belajar dasar pengembangan aplikasi mobile dengan React Native",
-        status: "Sedang Dipelajari",
-        progress: 6.7,
-        image: "https://via.placeholder.com/80",
-      },
-      {
-        id: 3,
-        title: "React Dasar",
-        description: "Belajar React dari awal hingga mahir",
-        status: "Selesai",
-        progress: 100,
-        image: "https://via.placeholder.com/80",
-      },
-      {
-        id: 4,
-        title: "Unix Command Line Dasar",
-        description: "Dasar penggunaan command line pada sistem operasi Unix/Linux",
-        status: "Selesai",
-        progress: 100,
-        image: "https://via.placeholder.com/80",
-      },
-    ];
+// useEffect(() => {
+//     // Data statis sementara
+//     const staticClasses = [
+//       {
+//         id: 1,
+//         title: "C++ Dasar",
+//         description: "Materi dasar pemrograman C++",
+//         status: "Belum Dimulai",
+//         progress: 0,
+//         image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fen%2Ffree-png-nwvsu&psig=AOvVaw0y1K9HUxEgtTZj4-t3L4Fa&ust=1738128184912000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOim7JnWl4sDFQAAAAAdAAAAABAP", // Gambar placeholder
+//       },
+//       {
+//         id: 2,
+//         title: "React Native",
+//         description: "Belajar dasar pengembangan aplikasi mobile dengan React Native",
+//         status: "Sedang Dipelajari",
+//         progress: 6.7,
+//         image: "https://via.placeholder.com/80",
+//       },
+//       {
+//         id: 3,
+//         title: "React Dasar",
+//         description: "Belajar React dari awal hingga mahir",
+//         status: "Selesai",
+//         progress: 100,
+//         image: "https://via.placeholder.com/80",
+//       },
+//       {
+//         id: 4,
+//         title: "Unix Command Line Dasar",
+//         description: "Dasar penggunaan command line pada sistem operasi Unix/Linux",
+//         status: "Selesai",
+//         progress: 100,
+//         image: "https://via.placeholder.com/80",
+//       },
+//     ];
   
-    // Set data statis ke state
-    setClasses(staticClasses);
-  }, []);
+//     // Set data statis ke state
+//     setClasses(staticClasses);
+//   }, []);
+
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentDataAktif, setCurrentDataAktif] = useState([]);
+  const [currentFilterAktif, setCurrentFilterAktif] = useState({
+    page: 1,
+    query: "",
+    sort: "[Nama Program] desc",
+    status: "",
+    ekt: activeUser,
+  });
+
+  const searchQuery = useRef();
+  const [selectedProgram, setSelectedProgram] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedKategori, setSelectedKategori] = useState("");
+
+  function handleSearch() {
+    setIsLoading(true);
+    setCurrentFilterAktif((prevFilter) => ({
+      ...prevFilter,
+      page: 1,
+      query: searchQuery.current.value,
+    }));
+  }
+
+  const getKelasSayaAktif = async () => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      const data = await UseFetch(API_LINK + "Klaim/GetProgramEksternal", {
+        ekt: activeUser,
+        page: 1,
+        query: "",
+        sort: "[Nama Program] desc",
+        status: "",
+      });
+      console.log("nihh", data);
+      if (!data || data === "ERROR") {
+        throw new Error("Terjadi kesalahan: Gagal mengambil data Program.");
+      }
+
+      setClasses(data);
+      setIsLoading(false);
+    } catch (e) {
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
+  console.log("data kelas", classes)
+
+  useEffect(() => {
+    getKelasSayaAktif();
+  }, [currentFilterAktif]);
   
   const filteredClasses = Array.isArray(classes) ? classes.filter((cls) => {
     if (activeTab === "Belum Dimulai") return cls.status === "Belum Dimulai";
@@ -408,61 +445,83 @@ useEffect(() => {
 
         {/* Class Cards */}
         <div style={{ display: "grid", gap: "20px" }}>
-          {filteredClasses.map((cls) => (
+  {filteredClasses.map((original) => {
+    const cls = {
+      id: original.Key,
+      title: original["Nama Program"],
+      desc: original.Deskripsi,
+      gambar: original.Gambar,
+      progress: original.progress || 0,
+      // tambahkan field lain jika dibutuhkan
+    };
+
+    return (
+      <div
+        key={cls.id}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "5px",
+          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <img
+          src={`${API_LINK}Upload/GetFile/${cls.gambar}`}
+          alt={cls.title}
+          style={{
+            width: "80px",
+            height: "80px",
+            borderRadius: "5px",
+            objectFit: "cover",
+          }}
+        />
+        <div style={{ flex: 1, marginLeft: "20px" }}>
+          <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>
+            {cls.title}
+          </h3>
+          <p style={{ margin: "5px 0", fontSize: "14px", color: "#888" }}>
+            {cls.desc?.split(" ").slice(0, 15).join(" ") +
+              (cls.desc?.split(" ").length > 15 ? "..." : "")}
+          </p>
+
+          <div
+            style={{
+              height: "5px",
+              backgroundColor: "#E9ECEF",
+              borderRadius: "5px",
+              overflow: "hidden",
+              marginRight: "40px",
+            }}
+          >
             <div
-              key={cls.id}
               style={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#fff",
-                padding: "20px",
-                borderRadius: "5px",
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                width: `${cls.progress}%`,
+                height: "100%",
+                backgroundColor: "#0A5EA8",
               }}
-            >
-              <img
-                src={cls.image}
-                alt={cls.title}
-                style={{ width: "80px", height: "80px", borderRadius: "5px" }}
-              />
-              <div style={{ flex: 1, marginLeft: "20px" }}>
-                <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>{cls.title}</h3>
-                <p style={{ margin: "5px 0", fontSize: "14px", color: "#888" }}>
-                  {cls.description}
-                </p>
-                <div
-                  style={{
-                    height: "5px",
-                    backgroundColor: "#E9ECEF",
-                    borderRadius: "5px",
-                    overflow: "hidden",
-                    marginRight:"40px"
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${cls.progress}%`,
-                      height: "100%",
-                      backgroundColor: "#0A5EA8",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <button
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#DB4437",
-                  color: "#fff",
-                  borderRadius: "5px",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Lihat Detail Kelas
-              </button>
-            </div>
-          ))}
+            ></div>
+          </div>
         </div>
+        <button
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#DB4437",
+            color: "#fff",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+          }}
+          onClick={() => onChangePage("detail", cls, (AppContext_test.klaim = "yes"))}
+        >
+          Lihat Detail Kelas
+        </button>
+      </div>
+    );
+  })}
+</div>
+
       </div>
       {showConfirmation && (
         <Konfirmasi

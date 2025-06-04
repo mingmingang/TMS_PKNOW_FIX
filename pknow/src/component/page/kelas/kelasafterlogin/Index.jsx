@@ -48,7 +48,10 @@ export default function KelolaKK({ onChangePage }) {
     query: "",
     sort: "[Nama Program] desc",
     status: "",
+    user: activeUser,
   });
+
+  console.log("nihh aktif", activeUser);
 
   const searchQuery = useRef();
   const [selectedProgram, setSelectedProgram] = useState("");
@@ -68,7 +71,7 @@ export default function KelolaKK({ onChangePage }) {
     setIsError(false);
     setIsLoading(true);
     try {
-      const data = await UseFetch(API_LINK + "Program/GetProgramAll", currentFilterAktif);
+      const data = await UseFetch(API_LINK + "Klaim/GetProgramEksternalNotKlaim", currentFilterAktif);
       if (!data || data === "ERROR") {
         throw new Error("Terjadi kesalahan: Gagal mengambil data Program.");
       }
@@ -133,12 +136,12 @@ export default function KelolaKK({ onChangePage }) {
           </div>
         </div>
 
-        <div className="navigasi-layout-page">
+        <div className="container mt-4">
           <p className="title-kk">Kelas Training</p>
         </div>
 
 
-        <div className="d-flex justify-content-between mb-4" style={{margin:"0px 80px"}}>
+        <div className="container d-flex justify-content-between mb-4">
         <div className="" style={{ textAlign: "center" }}>
       <select
         id="programStudi"
@@ -253,7 +256,10 @@ export default function KelolaKK({ onChangePage }) {
                           gambar: value.Gambar,
                           ProgramStudi: value.ProgramStudi,
                           publikasi: value.Publikasi,
-                          harga: value.Harga
+                          harga: value.Harga,
+                          periode: value.Periode,
+                          metode : value.Metode,
+                          level: value.Level
                         }}
                         onChangePage={onChangePage}
                       />

@@ -7,14 +7,11 @@ import CardKK from "../../part/CardClassTraining";
 import Alert from "../../part/Alert";
 import Paging from "../../part/Paging";
 import Input from "../../part/Input";
-import Header from "../../backbone/Header";
-import Footer from "../../backbone/Footer";
 import Cookies from "js-cookie";
 import { decryptId } from "../../util/Encryptor";
 import "../../../style/Search.css";
 import "../../../../src/index.css";
 import AnimatedSection from "../../part/AnimatedSection";
-
 
 const programStudi = [
   { id: 1, name: "Teknik Informatika" },
@@ -47,7 +44,10 @@ export default function KelolaKK({ onChangePage }) {
     query: "",
     sort: "[Nama Program] desc",
     status: "",
+    ekt: activeUser,
   });
+
+  console.log("yang active", activeUser);
 
   const searchQuery = useRef();
   const [selectedProgram, setSelectedProgram] = useState("");
@@ -67,11 +67,18 @@ export default function KelolaKK({ onChangePage }) {
     setIsError(false);
     setIsLoading(true);
     try {
-      const data = await UseFetch(API_LINK + "Program/GetProgramAll", currentFilterAktif);
+      const data = await UseFetch(API_LINK + "Klaim/GetProgramEksternal", {
+        ekt: activeUser,
+        page: 1,
+        query: "",
+        sort: "[Nama Program] desc",
+        status: "",
+      });
+      console.log("nihh", data);
       if (!data || data === "ERROR") {
         throw new Error("Terjadi kesalahan: Gagal mengambil data Program.");
       }
-      console.log("dataa",data)
+
       setCurrentDataAktif(data);
       setIsLoading(false);
     } catch (e) {
@@ -91,52 +98,52 @@ export default function KelolaKK({ onChangePage }) {
 
   return (
     <>
-    <AnimatedSection>
-      <div className="app-container">
-        <main>
-        <div className="backSearch">
-          <h1>Kelas Anda</h1>
-          <p>
-          Pelajari atau ayo mulai kelas yang telah anda klaim sebelumnya.
-          </p>
-          <div className="input-wrapper">
-            <div
-              className=""
-              style={{
-                width: "700px",
-                display: "flex",
-                backgroundColor: "white",
-                borderRadius: "20px",
-                height: "40px",
-              }}
-            >
-              <Input
-                ref={searchQuery}
-                forInput="pencarianKK"
-                placeholder="Cari Kelas Saya"
-                style={{
-                  border: "none",
-                  width: "680px",
-                  height: "40px",
-                  borderRadius: "20px",
-                }}
-              />
-              <Button2
-                iconName="search"
-                classType="px-4"
-                title="Cari"
-                onClick={handleSearch}
-                style={{ backgroundColor: "transparent", color: "#08549F" }}
-              />
+      <AnimatedSection>
+        <div className="app-container">
+          <main>
+            <div className="backSearch">
+              <h1>Kelas Anda</h1>
+              <p>
+                Pelajari atau ayo mulai kelas yang telah anda klaim sebelumnya.
+              </p>
+              <div className="input-wrapper">
+                <div
+                  className=""
+                  style={{
+                    width: "700px",
+                    display: "flex",
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    height: "40px",
+                  }}
+                >
+                  <Input
+                    ref={searchQuery}
+                    forInput="pencarianKK"
+                    placeholder="Cari Kelas Saya"
+                    style={{
+                      border: "none",
+                      width: "680px",
+                      height: "40px",
+                      borderRadius: "20px",
+                    }}
+                  />
+                  <Button2
+                    iconName="search"
+                    classType="px-4"
+                    title="Cari"
+                    onClick={handleSearch}
+                    style={{ backgroundColor: "transparent", color: "#08549F" }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="navigasi-layout-page">
-          <p className="title-kk">Kelas Saya</p>
-        </div>
+            <div className="navigasi-layout-page">
+              <p className="title-kk">Kelas Saya</p>
+            </div>
 
-
+            {/* 
         <div className="d-flex justify-content-between mb-4" style={{margin:"0px 80px"}}>
         <div className="" style={{ textAlign: "center" }}>
       <select
@@ -227,52 +234,70 @@ export default function KelolaKK({ onChangePage }) {
         <div className=""></div>
       )}
     </div>
-    </div>
+    </div> */}
 
-          <div className="container">
-            {isLoading ? (
-              <Alert type="info mt-3" message="Memuat data..." />
-            ) : isError ? (
-              <Alert type="danger mt-3" message="Gagal memuat data." />
-            ) : currentDataAktif.length === 0 ? (
-              <Alert type="warning mt-3" message="Tidak ada data!" />
-            ) : (
-              <>
-                <div className="row mt-0 gx-4">
-                  {currentDataAktif
-                  .filter(value => value.Publikasi === "Terpublikasi")
-                  .map((value, index) => (
-                    <div className="col-md-4 mb-4" key={index}>
-                      <CardKK
-                        data={{
-                          id: value.Key,
-                          title: value["Nama Program"],
-                          desc: value.Deskripsi,
-                          status: value.Status,
-                          gambar: value.Gambar,
-                          ProgramStudi: value.ProgramStudi,
-                          publikasi: value.Publikasi,
-                          harga: value.Harga
-                        }}
-                        noLogin="yes"
-                        onChangePage={onChangePage}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="mb-4 d-flex justify-content-center">
-                  <Paging
-                    pageSize={PAGE_SIZE}
-                    pageCurrent={currentFilterAktif.page}
-                    totalData={currentDataAktif[0]?.Count || 0}
-                    navigation={(page) => setCurrentFilterAktif({ ...currentFilterAktif, page })}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        </main>
-      </div>
+            <div className="container">
+              {isLoading ? (
+                <Alert type="info mt-3" message="Memuat data..." />
+              ) : isError ? (
+                <Alert type="danger mt-3" message="Gagal memuat data." />
+              ) : currentDataAktif.length === 0 ? (
+                <Alert type="warning mt-3" message="Tidak ada data!" />
+              ) : (
+                <>
+                  {currentDataAktif.filter(
+                    (value) => value.Publikasi === "Terpublikasi"
+                  ).length === 0 ? (
+                    <Alert
+                      type="warning  mb-4"
+                      message="Belum ada kelas yang anda klaim!"
+                    />
+                  ) : (
+                    <>
+                      <div className="row mt-0 gx-4">
+                        {currentDataAktif
+                          .filter((value) => value.Publikasi === "Terpublikasi")
+                          .map((value, index) => (
+                            <div className="col-md-4 mb-4" key={index}>
+                              <CardKK
+                                data={{
+                                  id: value.Key,
+                                  title: value["Nama Program"],
+                                  desc: value.Deskripsi,
+                                  status: value.Status,
+                                  gambar: value.Gambar,
+                                  ProgramStudi: value.ProgramStudi,
+                                  publikasi: value.Publikasi,
+                                  harga: value.Harga,
+                                  kelasSaya: "yes",
+                                  start: "yes",
+                                }}
+                                noLogin="yes"
+                                onChangePage={onChangePage}
+                              />
+                            </div>
+                          ))}
+                      </div>
+                      <div className="mb-4 d-flex justify-content-center">
+                        <Paging
+                          pageSize={PAGE_SIZE}
+                          pageCurrent={currentFilterAktif.page}
+                          totalData={currentDataAktif[0]?.Count || 0}
+                          navigation={(page) =>
+                            setCurrentFilterAktif({
+                              ...currentFilterAktif,
+                              page,
+                            })
+                          }
+                        />
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </main>
+        </div>
       </AnimatedSection>
     </>
   );

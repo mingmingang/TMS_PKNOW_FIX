@@ -131,12 +131,12 @@ export default function KelolaKK({ onChangePage }) {
           </div>
         </div>
 
-        <div className="navigasi-layout-page">
+        <div className="container ">
           <p className="title-kk">Kelas Training</p>
         </div>
 
 
-        <div className="d-flex justify-content-between mb-4" style={{margin:"0px 80px"}}>
+        <div className="container d-flex justify-content-between mb-4">
         <div className="" style={{ textAlign: "center" }}>
       <select
         id="programStudi"

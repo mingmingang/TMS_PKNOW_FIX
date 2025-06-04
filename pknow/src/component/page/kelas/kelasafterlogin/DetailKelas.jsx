@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { API_LINK } from "../../../util/Constants";
 import UseFetch from "../../../util/UseFetch";
 import Alert from "../../../part/Alert";
@@ -10,6 +10,8 @@ import "../../../../index.css";
 import AppContext_test from "./TestContext.jsx";
 import AppContext_master from "./MasterContext.jsx";
 import AnimatedSection from "../../../part/AnimatedSection.jsx";
+import SweetAlert from "../../../util/SweetAlert.js";
+import Swal from 'sweetalert2';
 
 export default function DetailKelas({ withID, onChangePage }) {
   let activeUser = "";
@@ -22,6 +24,8 @@ export default function DetailKelas({ withID, onChangePage }) {
   const [listMateri, setlistMateri] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isBackAction, setIsBackAction] = useState(false);
+
+  console.log("AppContext_test.klaim", AppContext_test.klaim);
 
   const [currentFilter, setCurrentFilter] = useState({
     page: 1,
@@ -44,7 +48,7 @@ export default function DetailKelas({ withID, onChangePage }) {
   const handleConfirmNo = () => {
     setShowConfirmation(false);
   };
-
+  console.log("data withid", withID);
   const getListKategoriProgram = async (filter) => {
     console.log("data program", withID);
     try {
@@ -157,10 +161,6 @@ export default function DetailKelas({ withID, onChangePage }) {
     }
   };
 
-  const [name, setName] = useState("");
-  const [course, setCourse] = useState("");
-  const [date, setDate] = useState("");
-
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -177,13 +177,11 @@ export default function DetailKelas({ withID, onChangePage }) {
   const [selectedValue, setSelectedValue] = useState(null); // Untuk menyimpan nilai skala
 
   const handleNextToSkala = () => {
-    // Menyembunyikan modal pendidikan dan menampilkan modal skala
     setShowModal(false);
     setShowSkalaModal(true);
   };
 
   const handleNextToFinish = () => {
-    // Proses atau simpan data sesuai yang diinginkan
     console.log("Pendidikan Data Disimpan");
     console.log("Skala Pemahaman:", selectedValue);
   };
@@ -193,6 +191,55 @@ export default function DetailKelas({ withID, onChangePage }) {
     AppContext_master.materiId = book.Key;
     AppContext_test.refreshPage += 1;
     onChangePage("pengenalan", true, book.Key, true);
+  };
+
+  const handleBeliKelas = (book) => {
+    AppContext_test.materiId = book.Key;
+    AppContext_master.materiId = book.Key;
+    AppContext_test.refreshPage += 1;
+    onChangePage("beli", book);
+  };
+
+  const handleGabungClick = () => {
+    setShowModal(true);
+  };
+
+  const handleClaim = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await UseFetch(API_LINK + "Klaim/CreateKlaim", {
+        ext_username: activeUser,
+        prg_id: withID.id,
+        klaim_catatan: "8",
+        klaim_bukti: "",
+        klaim_status: "sukses", // atau isi dari form kalau ada
+      });
+
+      if (response?.hasil === "ERROR") {
+        throw new Error(
+          response.message || "Terjadi kesalahan saat menyimpan klaim."
+        );
+      }
+
+      SweetAlert("Sukses", "Klaim berhasil disimpan", "success");
+      onChangePage("index"); // kembali ke halaman sebelumnya jika ada
+    } catch (error) {
+      window.scrollTo(0, 0);
+      setIsError({
+        error: true,
+        message: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleBelajarClick = () => {
+    const elemenMateri = document.querySelector(".materi");
+    if (elemenMateri) {
+      elemenMateri.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -205,9 +252,9 @@ export default function DetailKelas({ withID, onChangePage }) {
             padding: "100px 100px",
             backgroundImage: `linear-gradient(rgb(0, 0, 0), rgba(0, 0, 0, 0)), url(${API_LINK}Upload/GetFile/${withID.gambar})`,
             objectFit: "cover",
-            backgroundSize: "cover", // Gambar hanya mengambil 50% dari tinggi div
-            backgroundRepeat: "no-repeat", // Hindari pengulangan gambar
-            backgroundPosition: "right", // Posisikan gambar di tengah
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right",
           }}
         >
           <>
@@ -245,16 +292,28 @@ export default function DetailKelas({ withID, onChangePage }) {
                 {/* Menampilkan 200 huruf pertama */}
                 {withID.desc.length > 500 && "..."}
               </p>
-
-              {withID.harga && withID.harga > 0 ? (
-                <div className="">
-                  <div
-                    className=""
-                    style={{
-                      color: "red",
-                      fontWeight: "bold",
-                    }}
-                  >
+              {AppContext_test.klaim === "yes" ? (
+                <div style={{ color: "white", fontWeight: "bold" }}>
+                  Kelas Anda{" "}
+                  <div>
+                    <button
+                      className="btn btn-outline-primary mt-3"
+                      type="button"
+                      style={{
+                        fontSize: "15px",
+                        marginTop: "-10px",
+                        color: "white",
+                        borderColor: "white",
+                      }}
+                      onClick={handleBelajarClick}
+                    >
+                      <i className="fas fa-play mr-2"></i>Belajar
+                    </button>
+                  </div>
+                </div>
+              ) : withID.harga && withID.harga > 0 ? (
+                <div>
+                  <div style={{ color: "red", fontWeight: "bold" }}>
                     <p
                       style={{
                         color: "white",
@@ -273,66 +332,6 @@ export default function DetailKelas({ withID, onChangePage }) {
                     </p>
                   </div>
                   <div>
-                    {/* Tombol Gabung */}
-                    {/* <button
-                    className="bg-blue-100 text-white px-3 py-2 rounded-full"
-                    style={{
-                      border: "none",
-                      borderRadius: "10px",
-                      padding: "0px 10px",
-                      marginLeft: "20px",
-                      marginTop: "5px",
-                      background: "green",
-                    }}
-                    onClick={openModal} // Pastikan ini memanggil openModal
-                  >
-                    <i className="fas fa-add mr-2"></i>Gabung
-                  </button> */}
-                    <div className="">
-                      <button
-                        className="btn btn-outline-primary mt-3"
-                        type="button"
-                        style={{
-                          fontSize: "15px",
-                          marginTop: "-10px",
-                          color: "white",
-                          borderColor: "white",
-                        }}
-                        onClick={() =>
-                          document
-                            .getElementById("materi")
-                            .scrollIntoView({ behavior: "smooth" })
-                        }
-                      >
-                        <i className="fas fa-shopping-cart mr-2"></i> Beli Kelas
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className=""
-                  style={{
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Gratis{" "}
-                  {/* <button
-                  className="bg-blue-100 text-white px-3 py-2 rounded-full d-flex align-items-center"
-                  onClick={openModal}
-                  style={{
-                    border: "none",
-                    borderRadius: "10px",
-                    padding: "0px 10px",
-                    marginLeft: "20px",
-                    marginTop: "20px",
-                    background: "green",
-                  }}
-                >
-                  <i className="fas fa-add mr-2"></i>Gabung
-                </button> */}
-                  <div className="">
                     <button
                       className="btn btn-outline-primary mt-3"
                       type="button"
@@ -342,11 +341,26 @@ export default function DetailKelas({ withID, onChangePage }) {
                         color: "white",
                         borderColor: "white",
                       }}
-                      onClick={() =>
-                        document
-                          .getElementById("materi")
-                          .scrollIntoView({ behavior: "smooth" })
-                      }
+                      onClick={() => handleBeliKelas(withID)}
+                    >
+                      <i className="fas fa-shopping-cart mr-2"></i> Beli Kelas
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ color: "white", fontWeight: "bold" }}>
+                  Gratis{" "}
+                  <div>
+                    <button
+                      className="btn btn-outline-primary mt-3"
+                      type="button"
+                      style={{
+                        fontSize: "15px",
+                        marginTop: "-10px",
+                        color: "white",
+                        borderColor: "white",
+                      }}
+                      onClick={handleGabungClick}
                     >
                       <i className="fas fa-add mr-2"></i>Gabung
                     </button>
@@ -369,7 +383,7 @@ export default function DetailKelas({ withID, onChangePage }) {
           </p>
         </div>
 
-        <div className="" style={{ margin: "40px 100px" }}>
+        <div className="materi" style={{ margin: "40px 100px" }}>
           <h3 className="mb-4" style={{ fontWeight: "500", color: "#0A5EA8" }}>
             Materi Kelas
           </h3>
@@ -415,7 +429,6 @@ export default function DetailKelas({ withID, onChangePage }) {
                   {kategori["Nama Kategori Program"] || "Tidak ada deskripsi."}{" "}
                   <br />
                 </p>
-                {/* Render list materi jika kategori ini aktif */}
                 {activeCategory === kategori.Key && (
                   <div
                     style={{
@@ -427,7 +440,7 @@ export default function DetailKelas({ withID, onChangePage }) {
                     {console.log("data materii", listMateri)}
                     {listMateri.length > 0 ? (
                       listMateri
-                        .filter((materi) => materi.Status === "Aktif") // Filter materi yang Statusnya 'Aktif'
+                        .filter((materi) => materi.Status === "Aktif")
                         .map((materi, materiIndex) => (
                           <div
                             className="d-flex"
@@ -473,14 +486,24 @@ export default function DetailKelas({ withID, onChangePage }) {
                                 </p>
                               </div>
                               <div className="">
-                                {materi.Harga && materi.Harga > 0 ? (
+                                {console.log("harga materi", withID.harga)}
+                                {withID.harga &&
+                                withID.harga > 0 ||
+                                AppContext_test.klaim !== "yes" ? (
                                   <button
                                     className="btn btn-secondary mt-4 ml-2 mr-4"
                                     type="button"
-                                    disabled
                                     title="Kelas ini berbayar"
+                                     onClick={() => {
+                                      Swal.fire({
+                                        icon: "info",
+                                        title: "Akses Ditolak",
+                                        text: "Anda harus mengklaim kelas ini terlebih dahulu!",
+                                        confirmButtonColor: "#3085d6"
+                                      });
+                                    }}  
                                   >
-                                    <i className="fas fa-lock mr-2"></i> Kunci
+                                    <i className="fas fa-lock"></i> Kunci
                                   </button>
                                 ) : (
                                   <button
@@ -529,11 +552,11 @@ export default function DetailKelas({ withID, onChangePage }) {
               left: "0",
               width: "100%",
               height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparan hitam
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              zIndex: 9999, // Pastikan modal berada di atas konten lainnya
+              zIndex: 9999,
             }}
           >
             <div
@@ -547,7 +570,7 @@ export default function DetailKelas({ withID, onChangePage }) {
               }}
             >
               <div className="modal-header" style={{ marginBottom: "10px" }}>
-                <h2>Pendidikan</h2>
+                <h4>Klaim Kelas Training</h4>
                 <div style={{ textAlign: "right" }}>
                   <button
                     onClick={closeModal}
@@ -566,132 +589,9 @@ export default function DetailKelas({ withID, onChangePage }) {
                 </div>
               </div>
               <p style={{ padding: "0px 20px" }}>
-                Sebelum memulai kelas, kasih tahu pendidikan & tingkat pemahaman
-                materi kamu.
+                Sebelum memulai kelas, kasih tahu tingkat pemahaman materi kamu.
               </p>
               <div className="modal-body">
-                <form>
-                  <label>Asal Kota / Kab:</label>
-                  <input
-                    type="text"
-                    name="asalKota"
-                    style={{
-                      width: "100%",
-                      padding: "8px",
-                      marginBottom: "10px",
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <label>Status saat ini:</label>
-                  <select
-                    name="status"
-                    style={{
-                      width: "100%",
-                      padding: "8px",
-                      marginBottom: "10px",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <option value="mahasiswa">Mahasiswa</option>
-                    <option value="pekerja">Pekerja</option>
-                  </select>
-                  <label>Bidang:</label>
-                  <input
-                    type="text"
-                    name="bidang"
-                    value="IT"
-                    readOnly
-                    style={{
-                      width: "100%",
-                      padding: "8px",
-                      marginBottom: "10px",
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <label>Nama Sekolah / Universitas / Perusahaan:</label>
-                  <input
-                    type="text"
-                    name="sekolah"
-                    style={{
-                      width: "100%",
-                      padding: "8px",
-                      marginBottom: "10px",
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      padding: "10px 20px",
-                      backgroundColor: "#0E6EFE",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                      width: "100%",
-                    }}
-                    onClick={handleNextToSkala}
-                  >
-                    Selanjutnya
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showSkalaModal && (
-          <div
-            className="modal"
-            style={{
-              position: "fixed",
-              top: "0",
-              left: "0",
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)", // Transparan hitam
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 9999, // Pastikan modal berada di atas konten lainnya
-            }}
-          >
-            <div
-              className="modal-content"
-              style={{
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "10px",
-                width: "600px",
-                maxWidth: "100%",
-              }}
-            >
-              <div className="modal-header" style={{ marginBottom: "10px" }}>
-                <h2>Tingkat Pemahaman</h2>
-                <div style={{ textAlign: "right" }}>
-                  <button
-                    onClick={closeModal}
-                    style={{
-                      padding: "5px 15px",
-                      backgroundColor: "#f44336",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <p style={{ padding: "0px 10px" }}>
-                Sebelum memulai kelas, beri tahu tingkat pemahaman materi kamu.
-              </p>
-              <div
-                className="modal-body"
-                style={{ margin: "0px", padding: "10px" }}
-              >
-                {/* Skala 1-10 */}
                 <div style={{ marginBottom: "20px" }}>
                   <label>Seberapa paham kamu terhadap materi ini?</label>
                   <div
@@ -734,7 +634,7 @@ export default function DetailKelas({ withID, onChangePage }) {
                 <div className="d-flex">
                   <button
                     type="button"
-                    onClick={handleNextToFinish}
+                    onClick={closeModal}
                     style={{
                       padding: "10px 20px",
                       backgroundColor: "transparent",
@@ -746,25 +646,63 @@ export default function DetailKelas({ withID, onChangePage }) {
                       fontWeight: "600",
                     }}
                   >
-                    Kembali
+                    Batal
                   </button>
                   <button
                     type="button"
-                    onClick={handleNextToFinish}
+                    onClick={handleClaim}
                     style={{
                       padding: "10px 20px",
-                      backgroundColor: "#0E6EFE",
+                      backgroundColor: "green",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
                       cursor: "pointer",
                       width: "100%",
+                      fontWeight: "600",
                     }}
                   >
-                    Selesai
+                    Simpan
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {showSkalaModal && (
+          <div
+            className="modal"
+            style={{
+              position: "fixed",
+              top: "0",
+              left: "0",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <div
+              className="modal-content"
+              style={{
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "10px",
+                width: "600px",
+                maxWidth: "100%",
+              }}
+            >
+              <p style={{ padding: "0px 10px" }}>
+                Sebelum memulai kelas, beri tahu tingkat pemahaman materi kamu.
+              </p>
+              <div
+                className="modal-body"
+                style={{ margin: "0px", padding: "10px" }}
+              ></div>
             </div>
           </div>
         )}
