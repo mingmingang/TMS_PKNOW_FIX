@@ -271,6 +271,7 @@ export default function KelolaKK({ onChangePage }) {
                                   harga: value.Harga,
                                   kelasSaya: "yes",
                                   start: "yes",
+                                  level: value.Level
                                 }}
                                 noLogin="yes"
                                 onChangePage={onChangePage}

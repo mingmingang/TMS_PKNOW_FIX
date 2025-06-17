@@ -17,6 +17,9 @@ import { useState } from "react";
 import Input from "./Input";
 import { decode } from "he";
 import AppContext_test from "../page/kelas/kelasafterlogin/TestContext";
+import pemula from "../../assets/Pemula.png"
+import menengah from "../../assets/Menengah.png"
+import mahir from "../../assets/Mahir.png"
 
 function CardClassTraining({
   config = { footer: "", icon: "", className: "", label: "", page: "" },
@@ -48,13 +51,30 @@ function CardClassTraining({
       ? `${data.desc.substring(0, 100)}...`
       : data.desc;
 
+  console.log("nihh", data)
+
   let cardContent;
   if(data.kelasSaya == "yes"){
      cardContent = (
         <div className="d-flex justify-content-between mt-2">
           <div className="d-flex mt-2">
-            {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
-          </div>
+    {/* Icon dinamis berdasarkan level */}
+    <img 
+      className="ml-3" 
+      src={
+        data.level === 'pemula' ? pemula : 
+        data.level === 'menengah' ? menengah : 
+        mahir
+      } 
+      alt={data.level} 
+      style={{ width: "30px", height: "30px" }} 
+    />
+    
+    {/* Text level dengan huruf kapital */}
+    <p style={{ fontWeight: "bold", color: "#0A5EA8", marginLeft: "10px" }}>
+      {data.level.charAt(0).toUpperCase() + data.level.slice(1)}
+    </p>
+  </div>
 
           <div className="d-flex" style={{ width: "10%", marginTop: "15px" }}>
             <>
@@ -82,9 +102,24 @@ function CardClassTraining({
     if (data.harga > 0) {
       cardContent = (
         <div className="d-flex justify-content-between mt-2">
-          <div className="d-flex mt-2">
-            {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
-          </div>
+           <div className="d-flex mt-2">
+    {/* Icon dinamis berdasarkan level */}
+    <img 
+      className="ml-3" 
+      src={
+        data.level === 'pemula' ? pemula : 
+        data.level === 'menengah' ? menengah : 
+        mahir
+      } 
+      alt={data.level} 
+      style={{ width: "30px", height: "30px" }} 
+    />
+    
+    {/* Text level dengan huruf kapital */}
+    <p style={{ fontWeight: "bold", color: "#0A5EA8", marginLeft: "10px" }}>
+      {data.level.charAt(0).toUpperCase() + data.level.slice(1)}
+    </p>
+  </div>
 
           <div className="d-flex" style={{ width: "10%", marginTop: "15px" }}>
             <>
@@ -111,8 +146,23 @@ function CardClassTraining({
       cardContent = (
         <div className="d-flex justify-content-between mt-2">
           <div className="d-flex mt-2">
-            {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
-          </div>
+    {/* Icon dinamis berdasarkan level */}
+    <img 
+      className="ml-3" 
+      src={
+        data.level === 'pemula' ? pemula : 
+        data.level === 'menengah' ? menengah : 
+        mahir
+      } 
+      alt={data.level} 
+      style={{ width: "30px", height: "30px" }} 
+    />
+    
+    {/* Text level dengan huruf kapital */}
+    <p style={{ fontWeight: "bold", color: "#0A5EA8", marginLeft: "10px" }}>
+      {data.level.charAt(0).toUpperCase() + data.level.slice(1)}
+    </p>
+  </div>
 
           <div className="d-flex" style={{ width: "10%", marginTop: "15px" }}>
             <>
@@ -140,9 +190,24 @@ function CardClassTraining({
     if (data.harga > 0) {
       cardContent = (
         <div className="d-flex justify-content-between mt-2">
-          <div className="d-flex mt-2">
-            {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
-          </div>
+         <div className="d-flex mt-2">
+    {/* Icon dinamis berdasarkan level */}
+    <img 
+      className="ml-3" 
+      src={
+        data.level === 'pemula' ? pemula : 
+        data.level === 'menengah' ? menengah : 
+        mahir
+      } 
+      alt={data.level} 
+      style={{ width: "30px", height: "30px" }} 
+    />
+    
+    {/* Text level dengan huruf kapital */}
+    <p style={{ fontWeight: "bold", color: "#0A5EA8", marginLeft: "10px" }}>
+      {data.level.charAt(0).toUpperCase() + data.level.slice(1)}
+    </p>
+  </div>
 
           <div className="d-flex" style={{ width: "10%", marginTop: "15px" }}>
             <>
@@ -169,8 +234,23 @@ function CardClassTraining({
       cardContent = (
         <div className="d-flex justify-content-between mt-2">
           <div className="d-flex mt-2">
-            {/* <p style={{color:"#0A5EA8", fontWeight:"600", marginRight:"10px"}}>4.3</p> <span className="" style={{ color: "#f5a623"}}>⭐⭐⭐⭐</span><p style={{color:"#969696", marginLeft:"5px"}}>(16,325)</p> */}
-          </div>
+    {/* Icon dinamis berdasarkan level */}
+    <img 
+      className="ml-3" 
+      src={
+        data.level === 'pemula' ? pemula : 
+        data.level === 'menengah' ? menengah : 
+        mahir
+      } 
+      alt={data.level} 
+      style={{ width: "30px", height: "30px" }} 
+    />
+    
+    {/* Text level dengan huruf kapital */}
+    <p style={{ fontWeight: "bold", color: "#0A5EA8", marginLeft: "10px" }}>
+      {data.level.charAt(0).toUpperCase() + data.level.slice(1)}
+    </p>
+  </div>
 
           <div className="d-flex" style={{ width: "10%", marginTop: "15px" }}>
             <>
